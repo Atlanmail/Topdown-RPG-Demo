@@ -18,7 +18,6 @@ public abstract class EntityBaseState
     public abstract void ExitState();
 
     public abstract void UpdateState();
-
     public abstract void CheckSwitchStates();
 
     public abstract void InitializeSubState();

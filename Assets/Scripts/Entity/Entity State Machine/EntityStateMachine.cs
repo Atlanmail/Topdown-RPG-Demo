@@ -24,7 +24,7 @@ public class EntityStateMachine : MonoBehaviour
     }
     public void OnMovementInput(Vector2 movementInput)
     {
-        Debug.Log("OnMovementInput " + movementInput);
+        _currentState = _states.Walk();
     }
 
     public void OnJump() 
@@ -40,16 +40,6 @@ public class EntityStateMachine : MonoBehaviour
     public void endSprint()
     {
         Debug.Log("End Sprint");
-    }
-
-    void HandleRotation()
-    {
-
-    }
-
-    void HandleMovement()
-    {
-
     }
 
     void OnEnable()
