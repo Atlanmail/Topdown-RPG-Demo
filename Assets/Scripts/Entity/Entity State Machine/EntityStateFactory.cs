@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntityStateFactory
 {
-    EntityStateMachine _context;
+    protected EntityStateMachine _context;
     public EntityStateFactory(EntityStateMachine context)
     {
         _context = context;

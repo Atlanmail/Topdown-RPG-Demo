@@ -13,6 +13,11 @@ public class EntityGroundedState : EntityBaseState
         throw new System.NotImplementedException();
     }
 
+    public override void Cleanup()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void EnterState()
     {
         throw new System.NotImplementedException();
@@ -23,7 +28,17 @@ public class EntityGroundedState : EntityBaseState
         throw new System.NotImplementedException();
     }
 
+    public override void FixedUpdateState()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void InitializeSubState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void LateUpdateState()
     {
         throw new System.NotImplementedException();
     }

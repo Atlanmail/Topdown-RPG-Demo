@@ -67,7 +67,7 @@ public class PlayerController : EntityController
     private void MovementDirection_performed(InputAction.CallbackContext context)
     {
         Vector2 movementInput = context.ReadValue<Vector2>();
-        _entityStateMachine.OnMovementInput(movementInput);
+        _entityStateMachine.Move(movementInput);
     }
 
     private void OnAttack(InputAction.CallbackContext context)
