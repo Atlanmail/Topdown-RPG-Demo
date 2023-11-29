@@ -37,12 +37,12 @@ public class EntityIdleState : EntityBaseState
     }
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
+        ///throw new System.NotImplementedException();
     }
 
     public override void LateUpdateState()
     {
-        throw new System.NotImplementedException();
+        ///throw new System.NotImplementedException();
     }
 
     public override void UpdateState()

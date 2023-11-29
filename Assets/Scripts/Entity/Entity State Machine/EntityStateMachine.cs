@@ -9,7 +9,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
     /// controllers
     /// </summary>
     private CharacterController _charController;
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
     [SerializeField] private EntityController _entityController;
 
     /// <summary>
@@ -38,6 +38,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
     public CharacterController charController { get => _charController; }
 
     public Vector2 movementInput { get => _movementInput; set => _movementInput = value; }
+    public Animator Animator { get => _animator; }
 
     void Awake()
     {
@@ -47,6 +48,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
         _currentState = _states.Idle();
         _currentState.EnterState();
 
+        
         
     }
 

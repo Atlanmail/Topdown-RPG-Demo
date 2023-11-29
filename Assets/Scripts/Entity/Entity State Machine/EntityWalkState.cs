@@ -6,12 +6,25 @@ using UnityEngine;
 
 public class EntityWalkState : EntityBaseState
 {
-    public EntityWalkState(EntityStateMachine currentContext, EntityStateFactory factory)
-    : base(currentContext, factory) { }
-
+    
     protected CharacterController _characterController;
     protected float _speed;
     protected Vector2 _movementInput;
+    protected Animator _animator;
+    protected bool _isWalking;
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="currentContext"></param>
+    /// <param name="factory"></param>
+    public EntityWalkState(EntityStateMachine currentContext, EntityStateFactory factory)
+    : base(currentContext, factory)
+    {
+        _characterController = _ctx.charController;
+        _speed = _ctx.speed;
+        _animator = _ctx.Animator;
+    }
+
     public override void CheckSwitchStates()
     {
         if (_movementInput != Vector2.zero)
@@ -31,17 +44,14 @@ public class EntityWalkState : EntityBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Entered Walk");
-        _characterController = _ctx.charController;
-        _speed = _ctx.speed;
-
-
-
+        Debug.Log("Entered walk");
     }
 
     public override void ExitState()
     {
         Debug.Log("Exited Walk");
+
+        _animator.SetBool("isWalking", false);
     }
 
     public override void FixedUpdateState()
@@ -65,7 +75,9 @@ public class EntityWalkState : EntityBaseState
     {
        _movementInput = _ctx.movementInput;
 
-        HandleMovement();
+        handleAnimation();
+        handleMovement();
+
 
         CheckSwitchStates();
 
@@ -76,11 +88,16 @@ public class EntityWalkState : EntityBaseState
         
     }
 
-    protected virtual void HandleMovement()
+    protected virtual void handleMovement()
     {
         Vector3 moveDirection = new Vector3(_movementInput.x, 0, _movementInput.y);
-        Debug.Log(moveDirection);
+        ///Debug.Log(moveDirection);
         _characterController.SimpleMove(moveDirection * _speed);
+    }
+
+    protected virtual void handleAnimation()
+    {
+        _animator.SetBool("isWalking", true);
     }
 
 }
