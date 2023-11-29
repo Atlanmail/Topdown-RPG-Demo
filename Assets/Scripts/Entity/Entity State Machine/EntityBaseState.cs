@@ -5,10 +5,21 @@ using UnityEngine;
 
 public abstract class EntityBaseState 
 {
-
+    /// <summary>
+    ///  context and factory
+    /// </summary>
     protected EntityStateMachine _ctx;
     protected EntityStateFactory _factory;
-    
+
+    /// <summary>
+    /// sub and superstates
+    /// </summary>
+    protected EntityBaseState _currentSuperState;
+    protected EntityBaseState _currentSubState;
+
+
+    protected bool _isRootState = true;
+
     public EntityBaseState(EntityStateMachine currentContext, EntityStateFactory factory)
     {
         _ctx = currentContext;
@@ -38,7 +49,13 @@ public abstract class EntityBaseState
     /// </summary>
     public abstract void Cleanup(); 
 
-    protected void UpdateStates() { }
+    public void UpdateStates() {
+        UpdateState();
+
+        if (_currentSubState != null) { 
+            _currentSubState.UpdateStates();
+        }
+    }
 
     protected void SwitchState(EntityBaseState newState) 
     {
@@ -49,9 +66,23 @@ public abstract class EntityBaseState
 
         _ctx.CurrentState = newState;
 
+        if (_isRootState)
+        {
+            _ctx.CurrentState = newState;
+        } else {
+            _currentSuperState.SetSubState(newState);
+        }
+
        Cleanup();
         
     }
-    protected void SetSuperState() { }
-    protected void SetSubState() { }
+    protected void SetSuperState(EntityBaseState newSuperState) 
+    {
+        _currentSuperState = newSuperState;
+        _isRootState = false;
+    }
+    protected void SetSubState(EntityBaseState newSubstate) {
+        _currentSubState = newSubstate;
+        newSubstate.SetSuperState(this);
+    }
 }

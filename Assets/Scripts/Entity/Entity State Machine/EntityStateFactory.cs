@@ -27,6 +27,9 @@ public class EntityStateFactory
         }
 
         return state;
+
+
+
     }
     public virtual EntityBaseState Walk()
     {
@@ -58,6 +61,15 @@ public class EntityStateFactory
     }
 
     public virtual EntityBaseState Attack() {
-        return new EntityAttackState(_context, this);
+        EntityBaseState state;
+
+        if (!_states.TryGetValue("Attack", out state) || state == null)
+        {
+            // If "Idle" state does not exist or is null, create a new state
+            state = new EntityAttackState(_context, this);
+            _states["Attack"] = state;
+        }
+
+        return state;
     }
 }

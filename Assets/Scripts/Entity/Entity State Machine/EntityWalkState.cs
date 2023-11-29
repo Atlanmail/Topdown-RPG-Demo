@@ -31,6 +31,15 @@ public class EntityWalkState : EntityBaseState
 
     public override void CheckSwitchStates()
     {
+        if (_ctx.attackButtonPressed == true)
+        {
+            SwitchState(_factory.Attack());
+            return;
+        }
+
+
+        /// check idle
+        /// 
         if (_movementInput != Vector2.zero)
         {
             return;
@@ -43,6 +52,7 @@ public class EntityWalkState : EntityBaseState
         if (curVelocity.magnitude < 0.3f)
         {
             SwitchState(_factory.Idle());
+            return;
         }
     }
 

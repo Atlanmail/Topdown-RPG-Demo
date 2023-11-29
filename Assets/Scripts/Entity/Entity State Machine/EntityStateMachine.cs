@@ -28,6 +28,11 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
 
     protected float _maxHealth;
     protected float _currentHealth;
+
+    /// attack variables
+    /// 
+    protected bool _attackButtonPressed = false;
+
     /// <summary>
     /// getters and setters
     /// </summary>
@@ -42,6 +47,8 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
     public Animator Animator { get => _animator; }
 
     public float rotationFactorPerFrame { get => _rotationFactorPerFrame; }
+
+    public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
     void Awake()
     {
@@ -72,6 +79,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
 
     void Update()
     {
+        ///Debug.Log(_currentState.ToString());
         _currentState.UpdateState();
     }
 
@@ -109,6 +117,12 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
     public void Move(Vector2 movementInput)
     {
         _movementInput = movementInput;
+    }
+
+    public void Attack()
+    {
+        ///Debug.Log("Attacked!");
+        _attackButtonPressed = true;
     }
 
     public void OnJump()

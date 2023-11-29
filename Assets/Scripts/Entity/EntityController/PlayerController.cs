@@ -72,7 +72,7 @@ public class PlayerController : EntityController
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        Debug.Log("Attack1 pressed");
+        _entityStateMachine.Attack();
     }
 
     private void OnCast1(InputAction.CallbackContext context)
