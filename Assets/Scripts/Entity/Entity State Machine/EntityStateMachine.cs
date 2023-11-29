@@ -21,6 +21,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
 
     [SerializeField] protected float _speed = 5f;
     protected Vector2 _movementInput;
+    protected float _rotationFactorPerFrame = 15f;
 
     /// health variables
     /// 
@@ -39,6 +40,8 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
 
     public Vector2 movementInput { get => _movementInput; set => _movementInput = value; }
     public Animator Animator { get => _animator; }
+
+    public float rotationFactorPerFrame { get => _rotationFactorPerFrame; }
 
     void Awake()
     {

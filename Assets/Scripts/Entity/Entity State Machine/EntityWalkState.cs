@@ -12,6 +12,8 @@ public class EntityWalkState : EntityBaseState
     protected Vector2 _movementInput;
     protected Animator _animator;
     protected bool _isWalking;
+    protected Transform _transform;
+    protected float _rotationFactorPerFrame;
     /// <summary>
     /// constructor
     /// </summary>
@@ -23,6 +25,8 @@ public class EntityWalkState : EntityBaseState
         _characterController = _ctx.charController;
         _speed = _ctx.speed;
         _animator = _ctx.Animator;
+        _transform = _ctx.transform;
+        _rotationFactorPerFrame = _ctx.rotationFactorPerFrame;
     }
 
     public override void CheckSwitchStates()
@@ -76,6 +80,7 @@ public class EntityWalkState : EntityBaseState
        _movementInput = _ctx.movementInput;
 
         handleAnimation();
+        handleRotation();
         handleMovement();
 
 
@@ -98,6 +103,23 @@ public class EntityWalkState : EntityBaseState
     protected virtual void handleAnimation()
     {
         _animator.SetBool("isWalking", true);
+    }
+
+    protected virtual void handleRotation()
+    {
+        if (_movementInput == Vector2.zero)
+        {
+            return;
+        }
+
+        Vector3 positionToLookAt = new Vector3(_movementInput.x, 0, _movementInput.y);
+
+
+        Quaternion currentRotation = _transform.rotation;
+
+        Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
+
+        _transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
     }
 
 }
