@@ -8,12 +8,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: isRightSwing
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isLeftSwing
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: isWalking
     m_EventTreshold: 0
@@ -40,7 +34,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isLeftSwing
+    m_ConditionEvent: Left Swing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8978747145938922571}
@@ -132,14 +126,14 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isRightSwing
-    m_Type: 4
+  - m_Name: Right Swing
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isLeftSwing
-    m_Type: 4
+  - m_Name: Left Swing
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -203,7 +197,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isRightSwing
+    m_ConditionEvent: Right Swing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8680132220472071764}
@@ -379,12 +373,6 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: isRightSwing
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isLeftSwing
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
     m_ConditionEvent: isWalking
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -408,7 +396,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Right Swing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8680132220472071764}
   m_Solo: 0

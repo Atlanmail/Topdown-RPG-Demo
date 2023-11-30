@@ -51,8 +51,8 @@ public class EntityAttackState : EntityBaseState
         Debug.Log("Exited attack");
         _ctx.attackButtonPressed = false;
 
-        _animator.SetBool("isLeftSwing", false);
-        _animator.SetBool("isRightSwing", false);
+        ///_animator.SetBool("isLeftSwing", false);
+        ///_animator.SetBool("isRightSwing", false);
     }
 
     public override void FixedUpdateState()
@@ -79,7 +79,7 @@ public class EntityAttackState : EntityBaseState
     void playRightSwing()
     {
         Debug.Log("Played right swing");
-        _animator.Play("Right Swing");
+        _animator.SetTrigger("Right Swing");
 
         
     }
@@ -87,6 +87,6 @@ public class EntityAttackState : EntityBaseState
     void playLeftSwing()
     {
         Debug.Log("Played left swing");
-        _animator.Play("Left Swing");
+        _animator.SetTrigger("Left Swing");
     }
 }
