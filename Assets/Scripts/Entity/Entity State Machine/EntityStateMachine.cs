@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
+public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAttack
 {
 
     /// <summary>
@@ -138,5 +138,41 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable
     public void endSprint()
     {
         Debug.Log("End Sprint");
+    }
+
+    public void onAttackWindupStart()
+    {
+        if (_currentState is EntityAttackState)
+        {
+            EntityAttackState myState = _currentState as EntityAttackState;
+            myState.onAttackWindupStart();
+        }
+    }
+
+    public void onAttackAnimationStart()
+    {
+        if (_currentState is EntityAttackState)
+        {
+            EntityAttackState myState = _currentState as EntityAttackState;
+            myState.onAttackAnimationStart();
+        }
+    }
+
+    public void onAttackAnimationEnd()
+    {
+        if (_currentState is EntityAttackState)
+        {
+            EntityAttackState myState = _currentState as EntityAttackState;
+            myState.onAttackAnimationEnd();
+        }
+    }
+
+    public void onAttackAnimationRecovered()
+    {
+        if (_currentState is EntityAttackState)
+        {
+            EntityAttackState myState = _currentState as EntityAttackState;
+            myState.onAttackAnimationRecovered();
+        }
     }
 }

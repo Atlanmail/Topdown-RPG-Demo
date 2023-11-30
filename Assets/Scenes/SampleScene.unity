@@ -868,13 +868,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 2144a836ff056f44b84760db06ac5af1,
         type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-        'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightFoot'\n\tTransform
-        'mixamorig:Head'\n\tTransform 'mixamorig:LeftUpLeg'\n\tand more ...\n\tFrom
-        animation clip 'Sword And Shield Run Forward'"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 2144a836ff056f44b84760db06ac5af1,
         type: 3}
@@ -892,7 +886,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 139586986}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2144a836ff056f44b84760db06ac5af1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1259610600}
   m_SourcePrefab: {fileID: 100100000, guid: 2144a836ff056f44b84760db06ac5af1, type: 3}
 --- !u!4 &1259610597 stripped
 Transform:
@@ -906,6 +904,25 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1259610596}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1259610599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2144a836ff056f44b84760db06ac5af1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1259610596}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1259610600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259610599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55acfefe564a4e4e85d5c1cfdbf9f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityStateMachine: {fileID: 351953681}
 --- !u!1 &1325449481
 GameObject:
   m_ObjectHideFlags: 0

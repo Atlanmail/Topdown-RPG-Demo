@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityAttackState : EntityBaseState
+public class EntityAttackState : EntityBaseState, ICanAttack
 {
     protected Animator _animator;
     protected Transform _transform;
 
     private bool _isFinished = false;
+    private bool _hasSwungRight = false;
 
     protected bool _attackButtonPressed;
 
@@ -17,6 +18,7 @@ public class EntityAttackState : EntityBaseState
         _animator = _ctx.Animator;
         _transform = _ctx.transform;
         _isFinished = false;
+        _hasSwungRight = false;
     }
     public override void CheckSwitchStates()
     {
@@ -36,13 +38,8 @@ public class EntityAttackState : EntityBaseState
         Debug.Log("Entered attack");
         _isFinished = false;
         _ctx.attackButtonPressed = false;
+        _hasSwungRight = false;
         playRightSwing();
-
-        if (_attackButtonPressed == true )
-        {
-            playLeftSwing();
-        }
-        _isFinished = true;
         
     }
 
@@ -88,5 +85,44 @@ public class EntityAttackState : EntityBaseState
     {
         Debug.Log("Played left swing");
         _animator.SetTrigger("Left Swing");
+    }
+
+    void checkIfFinished ()
+    {
+        /**if (_attackButtonPressed == true && _hasSwungRight)
+        {
+            playLeftSwing();
+        }
+        else
+        {
+            _isFinished = true;
+        }**/
+
+        _isFinished = true;
+
+    }
+    public void Attack()
+    {
+        throw new System.AccessViolationException();
+    }
+
+    public void onAttackWindupStart()
+    {
+        
+    }
+
+    public void onAttackAnimationStart()
+    {
+        
+    }
+
+    public void onAttackAnimationEnd()
+    {
+        
+    }
+
+    public void onAttackAnimationRecovered()
+    {
+        checkIfFinished();
     }
 }
