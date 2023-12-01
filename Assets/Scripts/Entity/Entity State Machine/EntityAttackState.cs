@@ -6,11 +6,14 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 {
     protected Animator _animator;
     protected Transform _transform;
+    protected Hurtbox _hurtbox;
 
     private bool _isFinished = false;
     private bool _hasSwungRight = false;
+    private bool _hasSwungLeft = false;
 
     protected bool _attackButtonPressed;
+    
 
     public EntityAttackState(EntityStateMachine currentContext, EntityStateFactory factory)
     : base(currentContext, factory) 
@@ -19,6 +22,7 @@ public class EntityAttackState : EntityBaseState, ICanAttack
         _transform = _ctx.transform;
         _isFinished = false;
         _hasSwungRight = false;
+        _hurtbox = _ctx.Hurtbox;
     }
     public override void CheckSwitchStates()
     {
@@ -39,6 +43,7 @@ public class EntityAttackState : EntityBaseState, ICanAttack
         _isFinished = false;
         _ctx.attackButtonPressed = false;
         _hasSwungRight = false;
+        _hasSwungLeft = false;
         playRightSwing();
         
     }
@@ -69,36 +74,41 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 
     public override void UpdateState()
     {
-        _attackButtonPressed = _ctx.attackButtonPressed;
+        
         CheckSwitchStates();
     }
 
     void playRightSwing()
     {
         Debug.Log("Played right swing");
+        _hasSwungRight = true;
+        _ctx.attackButtonPressed = false;
         _animator.SetTrigger("Right Swing");
-
+        
         
     }
 
     void playLeftSwing()
     {
         Debug.Log("Played left swing");
+        _hasSwungLeft = true;
+        _ctx.attackButtonPressed = false;
         _animator.SetTrigger("Left Swing");
+
     }
 
     void checkIfFinished ()
     {
-        /**if (_attackButtonPressed == true && _hasSwungRight)
+        if (_ctx.attackButtonPressed == true && _hasSwungRight && _hasSwungLeft == false)
         {
             playLeftSwing();
         }
         else
         {
             _isFinished = true;
-        }**/
+        }
 
-        _isFinished = true;
+       
 
     }
     public void Attack()
@@ -113,12 +123,12 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 
     public void onAttackAnimationStart()
     {
-        
+        _hurtbox.Enable();
     }
 
     public void onAttackAnimationEnd()
     {
-        
+        _hurtbox.Disable();
     }
 
     public void onAttackAnimationRecovered()

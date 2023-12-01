@@ -11,6 +11,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
     private CharacterController _charController;
     [SerializeField] private Animator _animator;
     [SerializeField] private EntityController _entityController;
+    [SerializeField] private Hurtbox _hurtbox;
 
     /// <summary>
     /// state factory
@@ -50,6 +51,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
 
     public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
+    public Hurtbox Hurtbox { get => _hurtbox; }
     void Awake()
     {
         // setup state
@@ -121,7 +123,7 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
 
     public void Attack()
     {
-        ///Debug.Log("Attacked!");
+        Debug.Log("Attacked!");
         _attackButtonPressed = true;
     }
 
