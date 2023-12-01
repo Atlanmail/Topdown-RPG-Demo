@@ -6,6 +6,11 @@ public class Hitbox : MonoBehaviour
 {
     Collider _collider;
 
+    List<Collider> _ignoredColliders;
+
+    EntityStateMachine _entity;
+    EntityAttackState _attackState;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,5 +26,10 @@ public class Hitbox : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other);
+    }
+
+    public void addIgnoreColliders()
+    {
+
     }
 }

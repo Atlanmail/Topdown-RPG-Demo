@@ -177,4 +177,16 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
             myState.onAttackAnimationRecovered();
         }
     }
+
+    public EntityAttackState GetEntityAttackState()
+    {
+        if (_currentState is EntityAttackState)
+        {
+            return _currentState as EntityAttackState;
+        }
+        else
+        {
+            return _states.Attack();
+        }
+    }
 }

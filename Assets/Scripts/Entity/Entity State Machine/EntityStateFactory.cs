@@ -60,7 +60,7 @@ public class EntityStateFactory
         return new EntityRunState(_context, this);
     }
 
-    public virtual EntityBaseState Attack() {
+    public virtual EntityAttackState Attack() {
         EntityBaseState state;
 
         if (!_states.TryGetValue("Attack", out state) || state == null)

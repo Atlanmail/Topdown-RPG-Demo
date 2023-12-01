@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7561627829360754478}
   - component: {fileID: 6511446035618887938}
   - component: {fileID: -8413112920796465854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
