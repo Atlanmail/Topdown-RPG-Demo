@@ -30,12 +30,12 @@ public class EntityIdleState : EntityBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Entered Idle");
+        ///Debug.Log("Entered Idle");
     }
 
     public override void ExitState()
     {
-        Debug.Log("Exited Idle");
+        ///Debug.Log("Exited Idle");
     }
 
     public override void FixedUpdateState()

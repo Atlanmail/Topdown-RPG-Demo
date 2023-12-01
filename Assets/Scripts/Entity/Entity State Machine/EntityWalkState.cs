@@ -58,12 +58,12 @@ public class EntityWalkState : EntityBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Entered walk");
+        ///Debug.Log("Entered walk");
     }
 
     public override void ExitState()
     {
-        Debug.Log("Exited Walk");
+        ///Debug.Log("Exited Walk");
 
         _animator.SetBool("isWalking", false);
     }
