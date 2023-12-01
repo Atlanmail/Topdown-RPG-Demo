@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3372154037830616610}
   - component: {fileID: -3360547637238749459}
   m_Layer: 0
-  m_Name: HurtboxPoint
+  m_Name: HitboxPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

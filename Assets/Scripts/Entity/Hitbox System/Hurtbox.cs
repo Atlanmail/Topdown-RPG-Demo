@@ -6,6 +6,7 @@ using UnityEngine;
 public class Hurtbox : MonoBehaviour
 {
 
+    [SerializeField] EntityStateMachine _entity;
 
     public delegate void OnHurtboxEnable();
     public OnHurtboxEnable hurtboxEnable;
@@ -40,8 +41,8 @@ public class Hurtbox : MonoBehaviour
         }
     }
 
-    public void onCollide(IDamagable target)
+    public void Damage(float damage)
     {
-
+        _entity.damage(damage);
     }
 }
