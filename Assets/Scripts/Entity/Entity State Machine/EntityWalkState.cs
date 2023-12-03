@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,8 +13,11 @@ public class EntityWalkState : EntityBaseState
     protected Vector2 _movementInput;
     protected Animator _animator;
     protected bool _isWalking;
+    protected float _rotationSpeed;
+
     protected Transform _transform;
-    protected float _rotationFactorPerFrame;
+    protected EntityData _entityData;
+
     /// <summary>
     /// constructor
     /// </summary>
@@ -22,11 +26,12 @@ public class EntityWalkState : EntityBaseState
     public EntityWalkState(EntityStateMachine currentContext, EntityStateFactory factory)
     : base(currentContext, factory)
     {
+        _entityData = _ctx.entityData;
         _characterController = _ctx.charController;
-        _speed = _ctx.speed;
+        _speed = _entityData.speed;
         _animator = _ctx.Animator;
         _transform = _ctx.transform;
-        _rotationFactorPerFrame = _ctx.rotationFactorPerFrame;
+        _rotationSpeed = _entityData.rotationSpeed;
     }
 
     public override void CheckSwitchStates()
@@ -129,7 +134,7 @@ public class EntityWalkState : EntityBaseState
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
 
-        _transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
+        _transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationSpeed * Time.deltaTime);
     }
 
 }

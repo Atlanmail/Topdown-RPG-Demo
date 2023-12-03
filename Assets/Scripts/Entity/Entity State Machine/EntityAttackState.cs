@@ -6,7 +6,9 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 {
     protected Animator _animator;
     protected Transform _transform;
-    protected Hurtbox _hurtbox;
+    /// <summary>
+    /// protected Hurtbox _hurtbox;
+    /// </summary>
 
     private bool _isFinished = false;
     private bool _hasSwungRight = false;
@@ -22,7 +24,7 @@ public class EntityAttackState : EntityBaseState, ICanAttack
         _transform = _ctx.transform;
         _isFinished = false;
         _hasSwungRight = false;
-        _hurtbox = _ctx.Hurtbox;
+        
     }
     public override void CheckSwitchStates()
     {
@@ -123,12 +125,12 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 
     public void onAttackAnimationStart()
     {
-        _hurtbox.Enable();
+        ///_hurtbox.Enable();
     }
 
     public void onAttackAnimationEnd()
     {
-        _hurtbox.Disable();
+        ///_hurtbox.Disable();
     }
 
     public void onAttackAnimationRecovered()

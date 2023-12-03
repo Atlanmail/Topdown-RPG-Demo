@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAttack
+public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 {
+
+
+    [SerializeField] private EntityData _entityData;
 
     /// <summary>
     /// controllers
@@ -20,15 +23,11 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
     EntityStateFactory _states;
     /// movement variables
 
-    [SerializeField] protected float _speed = 5f;
+    
     protected Vector2 _movementInput;
-    protected float _rotationFactorPerFrame = 15f;
+    
 
-    /// health variables
-    /// 
-
-    protected float _maxHealth;
-    protected float _currentHealth;
+ 
 
     /// attack variables
     /// 
@@ -39,19 +38,21 @@ public class EntityStateMachine : MonoBehaviour, IMoveable, IDamagable, ICanAtta
     /// </summary>
     public EntityBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
-    [SerializeField] public float speed { get => _speed; set => _speed = value; }
-    public float maxHealth { get => _maxHealth; set => _maxHealth = value; }
-    public float currentHealth { get => _currentHealth; set => _currentHealth = value; }
+    
     public CharacterController charController { get => _charController; }
 
     public Vector2 movementInput { get => _movementInput; set => _movementInput = value; }
     public Animator Animator { get => _animator; }
 
-    public float rotationFactorPerFrame { get => _rotationFactorPerFrame; }
+    public float rotationSpeed { get => _entityData.rotationSpeed; }
 
     public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
     public Hurtbox Hurtbox { get => _hurtbox; }
+
+    public EntityData entityData { get => _entityData; }
+    public float speed { get => _entityData.speed;}
+
     void Awake()
     {
         // setup state

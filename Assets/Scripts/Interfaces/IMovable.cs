@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IMoveable
 {
-    public float speed { get; set; }
+    public float speed { get; }
 
     /**
      * given a direction vector, start moving in that direction

@@ -1,0 +1,57 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+
+[CreateAssetMenu(fileName = "EntityData", menuName = "Data/EntityData")]
+
+public class EntityData : ScriptableObject,  IDamagable
+{
+    
+   
+    /// health variables
+    /// 
+
+    public float _maxHealth;
+    private float _currentHealth;
+
+    /// attack variables
+    /// 
+
+    [SerializeField] private float _attackPower;
+    
+    //
+
+    /// speed variables
+    [SerializeField] private float _speed;
+    public float rotationSpeed = 15f;
+
+
+
+    /// <summary>
+    /// getters and setters
+    /// </summary>
+    public float currentHealth { get { return _currentHealth; } }
+    public float maxHealth { get { return _maxHealth; } }
+
+    public float speed { get { return _speed; } }
+
+    public float attackPower { get { return _attackPower; } }
+
+    public void damage(float damageAmount)
+    {
+        _currentHealth -= damageAmount;
+
+        if (_currentHealth <= 0 )
+        {
+            _currentHealth = 0;
+            die();
+        }
+    }
+
+    public void die()
+    {
+        
+    }
+}

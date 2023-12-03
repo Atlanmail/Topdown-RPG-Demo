@@ -5,9 +5,9 @@ using UnityEngine;
 public interface IDamagable
 {
 
-    float maxHealth { get; set; }
+    float maxHealth { get; }
 
-    float currentHealth { get; set; }
+    float currentHealth { get; }
 
     void damage(float damageAmount);
 

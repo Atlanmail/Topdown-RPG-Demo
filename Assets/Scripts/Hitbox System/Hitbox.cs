@@ -8,13 +8,17 @@ public class Hitbox : MonoBehaviour
 
     List<Collider> _ignoredColliders;
 
-    EntityStateMachine _entity;
-    EntityAttackState _attackState;
+    [SerializeField] EntityData _entityData;
+    EntityStateMachine _entityStateMachine;
+
+
+    public EntityData EntityData { get { return _entityData; } }
 
     // Start is called before the first frame update
     void Start()
     {
         _collider = GetComponent<Collider>();
+        _entityData = _entityStateMachine.entityData;
     }
 
     // Update is called once per frame
@@ -25,7 +29,14 @@ public class Hitbox : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
+        GameObject otherGameObject = other.gameObject;
+
+        Hurtbox hurtboxHit = otherGameObject.GetComponent<Hurtbox>();
+
+        if (hurtboxHit != null)
+        {
+            Debug.Log(hurtboxHit);
+        }
     }
 
     public void addIgnoreColliders()
