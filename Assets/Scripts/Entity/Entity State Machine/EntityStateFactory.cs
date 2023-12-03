@@ -70,6 +70,6 @@ public class EntityStateFactory
             _states["Attack"] = state;
         }
 
-        return state;
+        return state as EntityAttackState;
     }
 }

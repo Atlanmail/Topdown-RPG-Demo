@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/EntityData", order = 1)]
+[CreateAssetMenu(fileName = "EntityData", menuName = "Data/EntityData")]
+
 public class EntityData : ScriptableObject
 {
     [SerializeField] protected float _speed = 5f;
@@ -15,10 +17,10 @@ public class EntityData : ScriptableObject
     /// health variables
     /// 
 
-    [SerializeField] private float _maxHealth;
-    [SerializeField] private float _currentHealth;
+    public float _maxHealth;
+    private float _currentHealth;
 
     /// attack variables
     /// 
-    ///private bool _attackButtonPressed = false;
+    public bool attackButtonPressed = false;
 }
