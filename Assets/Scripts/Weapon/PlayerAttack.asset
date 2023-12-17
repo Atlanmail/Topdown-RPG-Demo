@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fceb3847dc9f0ce45a7c722b67abeb16, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 3ced6cccccb91bf49a51a4ef7c5ab475, type: 3}
+  m_Name: PlayerAttack
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _attackPower: 0
-  _speed: 5
-  rotationSpeed: 15
-  attackData: {fileID: 11400000, guid: c1f2b4bd5e5959a41952e3003c9d444c, type: 2}
+  physicalDamage: 25
+  fireDamage: 0
+  waterDamage: 0
+  earthDamage: 0

@@ -9,8 +9,8 @@ public interface IDamagable
 
     float currentHealth { get; }
 
-    void damage(float damageAmount);
+    void damage(AttackData damageAmount);
 
-    void die();
+    /// recommend a die function ig
 
 }

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityAttackState : EntityBaseState, ICanAttack
+public class EntityAttackState : EntityBaseState
 {
     protected Animator _animator;
     protected Transform _transform;
-    /// <summary>
-    /// protected Hurtbox _hurtbox;
-    /// </summary>
-
+    
+    protected Hitbox _hitbox;
+    protected AttackData _attackData;
+    
     private bool _isFinished = false;
     private bool _hasSwungRight = false;
     private bool _hasSwungLeft = false;
@@ -24,6 +24,9 @@ public class EntityAttackState : EntityBaseState, ICanAttack
         _transform = _ctx.transform;
         _isFinished = false;
         _hasSwungRight = false;
+
+        _hitbox = _ctx.attackHitbox;
+        _attackData = _ctx.entityData.attackData;
         
     }
     public override void CheckSwitchStates()
@@ -46,6 +49,10 @@ public class EntityAttackState : EntityBaseState, ICanAttack
         _ctx.attackButtonPressed = false;
         _hasSwungRight = false;
         _hasSwungLeft = false;
+
+        _hitbox.OnEnterCollision += onHitboxCollision;
+        _hitbox.colliderDisable();
+
         playRightSwing();
         
     }
@@ -57,6 +64,9 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 
         ///_animator.SetBool("isLeftSwing", false);
         ///_animator.SetBool("isRightSwing", false);
+        ///
+        _hitbox.OnEnterCollision -= onHitboxCollision;
+        _hitbox.colliderDisable();
     }
 
     public override void FixedUpdateState()
@@ -113,9 +123,14 @@ public class EntityAttackState : EntityBaseState, ICanAttack
        
 
     }
-    public void Attack()
+    public void onHitboxCollision(GameObject otherGameObject)
     {
-        throw new System.AccessViolationException();
+        Hurtbox hurtboxHit = otherGameObject.GetComponent<Hurtbox>();
+
+        if (hurtboxHit != null)
+        {
+            hurtboxHit.Damage(_attackData);
+        }
     }
 
     public void onAttackWindupStart()
@@ -125,12 +140,13 @@ public class EntityAttackState : EntityBaseState, ICanAttack
 
     public void onAttackAnimationStart()
     {
-        ///_hurtbox.Enable();
+        _hitbox.colliderEnable();
     }
 
     public void onAttackAnimationEnd()
     {
-        ///_hurtbox.Disable();
+        _hitbox.colliderDisable();
+        checkIfFinished();
     }
 
     public void onAttackAnimationRecovered()

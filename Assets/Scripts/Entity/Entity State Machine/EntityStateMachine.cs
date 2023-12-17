@@ -14,7 +14,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     private CharacterController _charController;
     [SerializeField] private Animator _animator;
     [SerializeField] private EntityController _entityController;
-    [SerializeField] private Hurtbox _hurtbox;
+    
 
     /// <summary>
     /// state factory
@@ -29,9 +29,12 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
  
 
-    /// attack variables
+    /// attack variables and hurtboxes
     /// 
     protected bool _attackButtonPressed = false;
+    [SerializeField] protected Hitbox _attackHitbox;
+    protected AttackData _attackData;
+    protected HurtboxManager _hurtboxManager;
 
     /// <summary>
     /// getters and setters
@@ -48,11 +51,18 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
-    public Hurtbox Hurtbox { get => _hurtbox; }
+    
 
     public EntityData entityData { get => _entityData; }
     public float speed { get => _entityData.speed;}
 
+    public float maxHealth => ((IDamagable)_entityData).maxHealth;
+
+    public float currentHealth => ((IDamagable)_entityData).currentHealth;
+    
+    
+    public Hitbox attackHitbox { get => _attackHitbox; }
+    public AttackData attackData { get => _attackData; }
     void Awake()
     {
         // setup state
@@ -60,7 +70,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _states = new EntityStateFactory(this);
         _currentState = _states.Idle();
         _currentState.EnterState();
-
+        
         
         
     }
@@ -69,6 +79,11 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     {
         /// setup char controller
         _charController = GetComponent<CharacterController>();
+        
+        
+        /// setup hurtbox manager
+        _hurtboxManager = GetComponent<HurtboxManager>();
+        _hurtboxManager.OnTakeDamage += onDamage;
     }
     void OnEnable()
     {
@@ -107,14 +122,9 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         throw new System.NotImplementedException();
     }
 
-    public void damage(float damageAmount)
+    void onDamage(AttackData damageAmount)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void die()
-    {
-        throw new System.NotImplementedException();
+        Debug.Log("Damage taken");
     }
 
     public void Move(Vector2 movementInput)

@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 351953682}
   - component: {fileID: 351953681}
   - component: {fileID: 351953684}
+  - component: {fileID: 351953685}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -321,7 +322,8 @@ MonoBehaviour:
   _entityData: {fileID: 11400000, guid: 4d66b2e83d856bd40a86a188f089b298, type: 2}
   _animator: {fileID: 1259610598}
   _entityController: {fileID: 351953682}
-  _hurtbox: {fileID: 0}
+  _attackHitbox: {fileID: 1431773722}
+  _attackData: {fileID: 0}
 --- !u!114 &351953682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +380,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.15, z: 0}
+--- !u!114 &351953685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351953680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d05bee56860e74694bee4402c79cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,6 +1242,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1397655040}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1431773722 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 70105608038928724, guid: c247e62d5c20a9d438e3255640309235,
+    type: 3}
+  m_PrefabInstance: {fileID: 5566568725743745856}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ddb1ac5ddb5ff40a14a77f7a85cb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1486211099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3480699329000672020, guid: 2144a836ff056f44b84760db06ac5af1,
@@ -1485,6 +1511,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 4d66b2e83d856bd40a86a188f089b298,
         type: 2}
+    - target: {fileID: 70105608038928724, guid: c247e62d5c20a9d438e3255640309235,
+        type: 3}
+      propertyPath: _entityStateMachine
+      value: 
+      objectReference: {fileID: 351953681}
     - target: {fileID: 3519735681328240291, guid: c247e62d5c20a9d438e3255640309235,
         type: 3}
       propertyPath: m_Enabled

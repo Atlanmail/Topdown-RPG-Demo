@@ -3,18 +3,30 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
+
+/**
+ * 
+ * hurtbox that fires an event if .damage is called on it.
+ * 
+ */
 public class Hurtbox : MonoBehaviour
 {
+    Collider _collider;
 
-    [SerializeField] EntityStateMachine _entity;
+    /// <summary>
+    /// EntityStateMachine _entityStateMachine;
+    /// </summary>
+    
+    HurtboxManager _manager;
 
-    public delegate void OnHurtboxEnable();
-    public OnHurtboxEnable hurtboxEnable;
+    public bool isActive { get { return _collider.enabled; } }
+    public HurtboxManager Manager { get { return _manager; } set { _manager = value; } }
+    ///public EntityData EntityData { get { return _entityData; } }
 
-    public delegate void OnHurtboxDisable();
-    public OnHurtboxDisable hurtboxDisable;
     void Start()
     {
+        _collider = GetComponent<Collider>();
+        
     }
 
     // Update is called once per frame
@@ -27,22 +39,18 @@ public class Hurtbox : MonoBehaviour
 
     public void Enable()
     {
-        if (hurtboxEnable != null) 
-        {
-            hurtboxEnable.Invoke();
-        }
+        _collider.enabled = true;
     }
 
     public void Disable()
     {
-        if (hurtboxDisable != null)
-        {
-            hurtboxDisable.Invoke();
-        }
+        _collider.enabled = false;
     }
 
-    public void Damage(float damage)
+    public void Damage(AttackData damage)
     {
-        _entity.damage(damage);
+        Manager.takeDamage(damage);
     }
+
+    
 }

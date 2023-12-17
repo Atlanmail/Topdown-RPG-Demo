@@ -39,8 +39,12 @@ public class EntityData : ScriptableObject,  IDamagable
 
     public float attackPower { get { return _attackPower; } }
 
-    public void damage(float damageAmount)
+    [SerializeField] public AttackData attackData;
+
+    public void damage(AttackData attackData)
     {
+
+        float damageAmount = attackData.physicalDamage;
         _currentHealth -= damageAmount;
 
         if (_currentHealth <= 0 )
