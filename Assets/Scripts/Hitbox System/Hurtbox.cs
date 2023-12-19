@@ -22,8 +22,8 @@ public class Hurtbox : MonoBehaviour
     public bool isActive { get { return _collider.enabled; } }
     public HurtboxManager Manager { get { return _manager; } set { _manager = value; } }
     ///public EntityData EntityData { get { return _entityData; } }
-
-    void Start()
+    public Collider BoxCollider { get { return _collider; } }
+    void Awake()
     {
         _collider = GetComponent<Collider>();
         

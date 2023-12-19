@@ -30,6 +30,11 @@ public class EntityAttackState : EntityBaseState
         _hitbox = _ctx.attackHitbox;
         _entityData = _ctx.entityData;
         _attackData = _entityData.attackData;
+
+        HurtboxManager hurtboxManager = _ctx.hurtboxManager;
+        BlockboxManager blockboxManager = _ctx.blockboxManager;
+
+        
        
         
     }

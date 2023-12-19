@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockboxManager : MonoBehaviour
 {
-    List<Blockbox> _blockboxList;
+    private List<Blockbox> _blockboxList;
 
     bool _enabled = true;
     /// <summary>
@@ -14,13 +14,11 @@ public class BlockboxManager : MonoBehaviour
     public delegate void DamageEventHandler(EntityData entity, AttackData attackData);
     public event DamageEventHandler OnBlockHit;
     public bool Enabled { get { return _enabled; } }
-
-
-    void Start()
+    
+    public List<Blockbox> BlockboxList { get { return _blockboxList; } }
+   
+    private void Awake()
     {
-
-
-
         _blockboxList = new List<Blockbox>();
 
         Blockbox[] blockboxes = GetComponentsInChildren<Blockbox>();
@@ -30,6 +28,15 @@ public class BlockboxManager : MonoBehaviour
             _blockboxList.Add(blockboxes[i]);
 
         }
+    }
+    void Start()
+    {
+
+
+
+        
+
+        
 
 
         foreach (Blockbox blockbox in _blockboxList)

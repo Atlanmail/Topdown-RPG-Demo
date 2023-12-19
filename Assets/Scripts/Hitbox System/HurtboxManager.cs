@@ -7,7 +7,7 @@ using UnityEngine;
  * doesn't manage which hurtbox sent that message
  * 
  */
-public class HurtboxManager : MonoBehaviour, ICollideboxManager
+public class HurtboxManager : MonoBehaviour
 {
     List<Hurtbox> _hurtboxList;
 
@@ -21,12 +21,21 @@ public class HurtboxManager : MonoBehaviour, ICollideboxManager
     public bool Enabled { get { return _enabled; } }
     public List<Hurtbox> hurtboxList { get { return _hurtboxList; } }
 
+
+    private void Awake()
+    {
+        _hurtboxList = new List<Hurtbox>();
+
+        Hurtbox[] hurtboxes = GetComponentsInChildren<Hurtbox>();
+        for (int i = 0; i < hurtboxes.Length; i++)
+        {
+            hurtboxes[i].Manager = this;
+            _hurtboxList.Add(hurtboxes[i]);
+
+        }
+    }
     void Start()
     {
-
-
-
-        _hurtboxList = new List<Hurtbox>();
 
         Hurtbox[] hurtboxes = GetComponentsInChildren<Hurtbox>();
         for (int i = 0; i < hurtboxes.Length; i++)
@@ -39,7 +48,7 @@ public class HurtboxManager : MonoBehaviour, ICollideboxManager
 
         foreach (Hurtbox hurtbox in _hurtboxList)
         {
-            Debug.Log(hurtbox);
+            ///Debug.Log(hurtbox);
         }
 
 

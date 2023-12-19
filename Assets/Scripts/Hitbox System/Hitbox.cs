@@ -7,18 +7,24 @@ public class Hitbox : MonoBehaviour
 {
     Collider _collider;
 
-    List<Collider> _ignoredColliders;
+    private List<Collider> _ignoredColliders;
 
     EntityData _entityData;
     EntityStateMachine _entityStateMachine;
 
     public bool isActive { get { return _collider.enabled; } }
     public EntityData EntityData { get { return _entityData; } }
-    
+    public Collider BoxCollider { get => _collider; }
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        instantiateIgnoredList();
+        _collider = GetComponent<Collider>();
+    }
     void Start()
     {
-        _collider = GetComponent<Collider>();
+       
         _entityStateMachine = transform.root.GetComponent<EntityStateMachine>();
         _entityData = _entityStateMachine.entityData;
         
@@ -38,7 +44,7 @@ public class Hitbox : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
 
-        
+        Debug.Log("Hit " + other.gameObject);
         GameObject otherGameObject = other.gameObject;
         OnEnterCollision?.Invoke(otherGameObject);
 
@@ -51,18 +57,73 @@ public class Hitbox : MonoBehaviour
         }*/
     }
 
-    public void addIgnoreCollider()
+    public void addIgnoreCollider(Collider colliderToIgnore)
     {
+        instantiateIgnoredList();
+        _ignoredColliders.Add(colliderToIgnore);
+        ///Debug.Log("Ignored" + colliderToIgnore);
+        ///Debug.Log(_ignoredColliders.Count);
+        
+    }
 
+    public void addIgnoreColliders(HurtboxManager hurtboxManager)
+    {
+        ///instantiateIgnoredList();
+
+        List<Hurtbox> list = hurtboxManager.hurtboxList;
+        
+        if (list == null)
+        {
+            Debug.Log("Hurtbox List == null");
+            return;
+        }
+
+        foreach (Hurtbox hurtbox in list)
+        {
+            Collider collider = hurtbox.BoxCollider;
+            addIgnoreCollider(collider);
+        }
+
+    }
+
+    public void addIgnoreColliders(BlockboxManager blockboxManager)
+    {
+        ///instantiateIgnoredList();
+        
+
+        if (blockboxManager.BlockboxList == null)
+        {
+            return;
+        }
+
+        List<Blockbox> list = blockboxManager.BlockboxList;
+        foreach (Blockbox blockbox in list)
+        {
+            Collider collider = blockbox.BoxCollider;
+            addIgnoreCollider(collider);
+        
+        }
     }
 
     public void colliderEnable()
     {
         _collider.enabled = true;
+
+        foreach (Collider colliderToIgnore in _ignoredColliders) {
+            Physics.IgnoreCollision(_collider, colliderToIgnore, true);
+        }
     }
 
     public void colliderDisable()
     {
         _collider.enabled = false;
+    }
+    
+    private void instantiateIgnoredList()
+    {
+        if (_ignoredColliders == null)
+        {
+            _ignoredColliders = new List<Collider> ();
+        }
     }
 }

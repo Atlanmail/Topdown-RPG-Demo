@@ -25,16 +25,16 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     
     protected Vector2 _movementInput;
-    
 
- 
+    /// collidebox managers
+    protected HurtboxManager _hurtboxManager;
+    protected BlockboxManager _blockboxManager;
 
     /// attack variables and hurtboxes
     /// 
     protected bool _attackButtonPressed = false;
     [SerializeField] protected Hitbox _attackHitbox;
     protected AttackData _attackData;
-    protected HurtboxManager _hurtboxManager;
 
     /// <summary>
     /// getters and setters
@@ -63,8 +63,21 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     
     public Hitbox attackHitbox { get => _attackHitbox; }
     public AttackData attackData { get => _attackData; }
+
+    public HurtboxManager hurtboxManager { get => _hurtboxManager; }
+    public BlockboxManager blockboxManager { get => _blockboxManager; }
     void Awake()
     {
+        /// setup char controller
+        _charController = GetComponent<CharacterController>();
+
+
+        /// setup hurtbox manager
+        _hurtboxManager = GetComponent<HurtboxManager>();
+
+        /// setup blockbox manager
+        /// 
+        _blockboxManager = GetComponent<BlockboxManager>();
         // setup state
 
         _states = new EntityStateFactory(this);
@@ -77,13 +90,17 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Start()
     {
-        /// setup char controller
-        _charController = GetComponent<CharacterController>();
+        
         
         
         /// setup hurtbox manager
         _hurtboxManager = GetComponent<HurtboxManager>();
+        
         _hurtboxManager.OnTakeDamage += onDamage;
+
+
+        _attackHitbox.addIgnoreColliders(hurtboxManager);
+        _attackHitbox.addIgnoreColliders(blockboxManager);
     }
     void OnEnable()
     {
