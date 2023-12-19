@@ -122,9 +122,9 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         throw new System.NotImplementedException();
     }
 
-    void onDamage(AttackData damageAmount)
+    void onDamage(EntityData entityData, AttackData damageAmount)
     {
-        Debug.Log("Damage taken");
+        Debug.Log("Damage taken from: " + entityData);
     }
 
     public void Move(Vector2 movementInput)

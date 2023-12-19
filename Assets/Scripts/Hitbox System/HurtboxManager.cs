@@ -7,7 +7,7 @@ using UnityEngine;
  * doesn't manage which hurtbox sent that message
  * 
  */
-public class HurtboxManager : MonoBehaviour
+public class HurtboxManager : MonoBehaviour, ICollideboxManager
 {
     List<Hurtbox> _hurtboxList;
 
@@ -16,10 +16,10 @@ public class HurtboxManager : MonoBehaviour
     ///  delegates
     /// </summary>
     /// <param name="attackData"></param>
-    public delegate void DamageEventHandler(AttackData attackData);
+    public delegate void DamageEventHandler(EntityData entity, AttackData attackData);
     public event DamageEventHandler OnTakeDamage;
     public bool Enabled { get { return _enabled; } }
-
+    public List<Hurtbox> hurtboxList { get { return _hurtboxList; } }
 
     void Start()
     {
@@ -46,9 +46,9 @@ public class HurtboxManager : MonoBehaviour
     }
 
 
-    public void takeDamage(AttackData attackData)
+    public void takeDamage(EntityData entityData, AttackData attackData)
     {
-        OnTakeDamage?.Invoke(attackData);
+        OnTakeDamage?.Invoke(entityData, attackData);
     }
 
     public void Enable()

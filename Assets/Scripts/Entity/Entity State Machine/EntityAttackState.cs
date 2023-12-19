@@ -9,7 +9,9 @@ public class EntityAttackState : EntityBaseState
     
     protected Hitbox _hitbox;
     protected AttackData _attackData;
+    protected EntityData _entityData;
     
+    // variables for animations
     private bool _isFinished = false;
     private bool _hasSwungRight = false;
     private bool _hasSwungLeft = false;
@@ -26,7 +28,9 @@ public class EntityAttackState : EntityBaseState
         _hasSwungRight = false;
 
         _hitbox = _ctx.attackHitbox;
-        _attackData = _ctx.entityData.attackData;
+        _entityData = _ctx.entityData;
+        _attackData = _entityData.attackData;
+       
         
     }
     public override void CheckSwitchStates()
@@ -127,9 +131,12 @@ public class EntityAttackState : EntityBaseState
     {
         Hurtbox hurtboxHit = otherGameObject.GetComponent<Hurtbox>();
 
+        ///Debug.Log(otherGameObject);
+
         if (hurtboxHit != null)
         {
-            hurtboxHit.Damage(_attackData);
+            
+            hurtboxHit.Damage(_entityData, _attackData);
         }
     }
 

@@ -1,41 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 
-
-/**
- * 
- * hurtbox that fires an event if .damage is called on it.
- * 
- */
-public class Hurtbox : MonoBehaviour
+public class Blockbox : MonoBehaviour
 {
     Collider _collider;
 
     /// <summary>
     /// EntityStateMachine _entityStateMachine;
     /// </summary>
-    
-    HurtboxManager _manager;
+
+    BlockboxManager _manager;
 
     public bool isActive { get { return _collider.enabled; } }
-    public HurtboxManager Manager { get { return _manager; } set { _manager = value; } }
+    public BlockboxManager Manager { get { return _manager; } set { _manager = value; } }
     ///public EntityData EntityData { get { return _entityData; } }
 
     void Start()
     {
         _collider = GetComponent<Collider>();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-   
+
 
     public void Enable()
     {
@@ -47,10 +40,8 @@ public class Hurtbox : MonoBehaviour
         _collider.enabled = false;
     }
 
-    public virtual void Damage(EntityData entity, AttackData damage)
+    public virtual void Damage(EntityData entityData, AttackData attackData)
     {
-        Manager.takeDamage(entity, damage);
+        Manager.takeDamage(entityData, attackData);
     }
-
-    
 }

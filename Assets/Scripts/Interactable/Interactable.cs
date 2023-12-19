@@ -34,8 +34,8 @@ public class Interactable : MonoBehaviour
         
     }
 
-    void onDamage(AttackData attackData)
+    void onDamage(EntityData entityData,AttackData attackData)
     {
-        Debug.Log("Hit!");
+        Debug.Log("Hit by: " + attackData + " from " + entityData);
     }
 }
