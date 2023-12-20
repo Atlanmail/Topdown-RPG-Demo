@@ -13,7 +13,7 @@ public class EntityData : ScriptableObject,  IDamagable
     /// health variables
     /// 
 
-    public float _maxHealth;
+    [SerializeField] private float _maxHealth;
     private float _currentHealth;
 
     /// attack variables
@@ -47,6 +47,7 @@ public class EntityData : ScriptableObject,  IDamagable
         float damageAmount = attackData.physicalDamage;
         _currentHealth -= damageAmount;
 
+        Debug.Log(this + " " + _currentHealth);
         if (_currentHealth <= 0 )
         {
             _currentHealth = 0;

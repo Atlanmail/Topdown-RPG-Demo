@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
+
+    [SerializeField] InteractableData interactableData;
+    /// <summary>
+    ///  hurtbox managers
+    /// </summary>
     HurtboxManager _manager;
+
     
     void Start()
     {
+        interactableData.onLoad();
+
         _manager = GetComponent<HurtboxManager>();
         _manager.OnTakeDamage += onDamage;
     }
@@ -36,6 +44,6 @@ public class Interactable : MonoBehaviour
 
     void onDamage(EntityData entityData,AttackData attackData)
     {
-        Debug.Log("Hit by: " + attackData + " from " + entityData);
+        interactableData.damage(attackData);
     }
 }

@@ -8,6 +8,7 @@ public class Hitbox : MonoBehaviour
     Collider _collider;
 
     private List<Collider> _ignoredColliders;
+    private List<CharacterController> _ignoredControllers;
 
     EntityData _entityData;
     EntityStateMachine _entityStateMachine;
@@ -66,6 +67,12 @@ public class Hitbox : MonoBehaviour
         
     }
 
+    public void addIgnoreController(CharacterController controllerToIgnore)
+    {
+        instantiateIgnoredList();
+        _ignoredControllers.Add(controllerToIgnore);
+    }
+
     public void addIgnoreColliders(HurtboxManager hurtboxManager)
     {
         ///instantiateIgnoredList();
@@ -88,7 +95,7 @@ public class Hitbox : MonoBehaviour
 
     public void addIgnoreColliders(BlockboxManager blockboxManager)
     {
-        ///instantiateIgnoredList();
+        instantiateIgnoredList();
         
 
         if (blockboxManager.BlockboxList == null)
@@ -112,6 +119,10 @@ public class Hitbox : MonoBehaviour
         foreach (Collider colliderToIgnore in _ignoredColliders) {
             Physics.IgnoreCollision(_collider, colliderToIgnore, true);
         }
+
+        foreach (CharacterController controller in _ignoredControllers) {
+            Physics.IgnoreCollision(_collider, controller, true);
+        }
     }
 
     public void colliderDisable()
@@ -125,5 +136,11 @@ public class Hitbox : MonoBehaviour
         {
             _ignoredColliders = new List<Collider> ();
         }
+
+        if (_ignoredControllers == null)
+        {
+            _ignoredControllers = new List<CharacterController>();
+        }
     }
+
 }

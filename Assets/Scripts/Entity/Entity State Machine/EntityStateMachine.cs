@@ -90,17 +90,16 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Start()
     {
-        
-        
-        
+
+
+
         /// setup hurtbox manager
-        _hurtboxManager = GetComponent<HurtboxManager>();
-        
-        _hurtboxManager.OnTakeDamage += onDamage;
+        setupHurtboxManager();
 
 
         _attackHitbox.addIgnoreColliders(hurtboxManager);
         _attackHitbox.addIgnoreColliders(blockboxManager);
+        _attackHitbox.addIgnoreController(_charController);
     }
     void OnEnable()
     {
@@ -139,15 +138,23 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         throw new System.NotImplementedException();
     }
 
+    void setupHurtboxManager()
+    {
+        _hurtboxManager = GetComponent<HurtboxManager>();
+
+        _hurtboxManager.OnTakeDamage += onDamage;
+    }
     void onDamage(EntityData entityData, AttackData damageAmount)
     {
-        Debug.Log("Damage taken from: " + entityData);
+        _entityData.damage(damageAmount);
     }
 
     public void Move(Vector2 movementInput)
     {
         _movementInput = movementInput;
     }
+
+  
 
     public void Attack()
     {
