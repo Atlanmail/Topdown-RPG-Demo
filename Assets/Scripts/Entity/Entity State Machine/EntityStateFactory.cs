@@ -72,4 +72,18 @@ public class EntityStateFactory
 
         return state as EntityAttackState;
     }
+
+    public virtual EntityStaggerState Stagger()
+    {
+        EntityBaseState state;
+
+        if (!_states.TryGetValue("Stagger", out state) || state == null)
+        {
+            // If "Idle" state does not exist or is null, create a new state
+            state = new EntityStaggerState(_context, this);
+            _states["Stagger"] = state;
+        }
+
+        return state as EntityStaggerState;
+    }
 }

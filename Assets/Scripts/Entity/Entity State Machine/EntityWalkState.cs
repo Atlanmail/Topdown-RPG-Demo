@@ -36,6 +36,14 @@ public class EntityWalkState : EntityBaseState
 
     public override void CheckSwitchStates()
     {
+
+
+        if (_ctx.staggered)
+        {
+            SwitchState(_factory.Stagger());
+            return;
+        }
+
         if (_ctx.attackButtonPressed == true)
         {
             SwitchState(_factory.Attack());

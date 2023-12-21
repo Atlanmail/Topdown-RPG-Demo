@@ -15,6 +15,12 @@ public class EntityIdleState : EntityBaseState
     public override void CheckSwitchStates()
     {
         ///Debug.Log("Idle checking");
+        ///
+        if (_ctx.staggered)
+        {
+            SwitchState(_factory.Stagger());
+            return;
+        }
         if (_ctx.attackButtonPressed == true)
         {
             SwitchState(_factory.Attack());

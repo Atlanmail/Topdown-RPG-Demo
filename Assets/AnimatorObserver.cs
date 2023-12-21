@@ -44,4 +44,9 @@ public class AnimatorObserver : MonoBehaviour
     {
         _entityStateMachine.onAttackAnimationRecovered();
     }
+
+    public void onStaggerEnd()
+    {
+        _entityStateMachine.staggerEnd();
+    }
 }

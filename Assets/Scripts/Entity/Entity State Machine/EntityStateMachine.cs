@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,22 +27,25 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     
     protected Vector2 _movementInput;
 
+    /// <summary>
     /// collidebox managers
+    /// </summary>
     protected HurtboxManager _hurtboxManager;
     protected BlockboxManager _blockboxManager;
 
-    /// attack variables and hurtboxes
-    /// 
+    /// <summary>
+    /// attack variables and hitbox
+    /// </summary>
     protected bool _attackButtonPressed = false;
     [SerializeField] protected Hitbox _attackHitbox;
     protected AttackData _attackData;
+    protected bool _isStaggered = false;
 
     /// <summary>
     /// getters and setters
     /// </summary>
     public EntityBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-
-    
+  
     public CharacterController charController { get => _charController; }
 
     public Vector2 movementInput { get => _movementInput; set => _movementInput = value; }
@@ -66,8 +70,14 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     public HurtboxManager hurtboxManager { get => _hurtboxManager; }
     public BlockboxManager blockboxManager { get => _blockboxManager; }
+
+    public bool staggered { get => _isStaggered; set { _isStaggered = value; } }
     void Awake()
     {
+
+        /// setup entitydata
+
+        entityDataSetup();
         /// setup char controller
         _charController = GetComponent<CharacterController>();
 
@@ -100,6 +110,13 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _attackHitbox.addIgnoreColliders(hurtboxManager);
         _attackHitbox.addIgnoreColliders(blockboxManager);
         _attackHitbox.addIgnoreController(_charController);
+
+
+        /// setup entity data events
+        /// 
+
+        _entityData.OnStagger += onStagger;
+
     }
     void OnEnable()
     {
@@ -154,7 +171,10 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _movementInput = movementInput;
     }
 
-  
+    void entityDataSetup()
+    {
+        _entityData = _entityData.Clone();
+    }
 
     public void Attack()
     {
@@ -162,6 +182,10 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _attackButtonPressed = true;
     }
 
+    void onStagger()
+    {
+        _isStaggered = true;
+    }
     public void OnJump()
     {
         Debug.Log("Jump");
@@ -222,6 +246,15 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         else
         {
             return _states.Attack();
+        }
+    }
+
+    public void staggerEnd()
+    {
+        if (_currentState is EntityStaggerState)
+        {
+            EntityStaggerState myState = _currentState as EntityStaggerState;
+            myState.staggerEnd();
         }
     }
 }

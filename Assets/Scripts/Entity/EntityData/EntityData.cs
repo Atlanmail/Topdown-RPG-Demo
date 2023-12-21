@@ -27,7 +27,7 @@ public class EntityData : ScriptableObject,  IDamagable
     [SerializeField] private float _speed;
     public float rotationSpeed = 15f;
 
-
+    private bool hasLoaded = false;
 
     /// <summary>
     /// getters and setters
@@ -40,6 +40,13 @@ public class EntityData : ScriptableObject,  IDamagable
     public float attackPower { get { return _attackPower; } }
 
     [SerializeField] public AttackData attackData;
+    /// <summary>
+    /// events
+    /// </summary>
+
+    public delegate void StaggerEventHandler();
+    public event StaggerEventHandler OnStagger;
+
 
     public void damage(AttackData attackData)
     {
@@ -53,10 +60,39 @@ public class EntityData : ScriptableObject,  IDamagable
             _currentHealth = 0;
             die();
         }
+
+        stagger();
     }
 
     public void die()
     {
-        
+        Debug.Log("Died");
+    }
+
+
+    /// <summary>
+    /// sets the entityData to a default state
+    /// </summary>
+    public void initialize()
+    {
+        _currentHealth = maxHealth;
+    }
+    public EntityData Clone()
+    {
+        EntityData clone = ScriptableObject.CreateInstance<EntityData>();
+        clone._maxHealth = this._maxHealth;
+        clone._attackPower = this._attackPower;
+        clone._speed = this._speed;
+        clone.rotationSpeed = this.rotationSpeed;
+        clone.attackData = this.attackData; // Make sure to handle this if AttackData needs to be cloned as well
+        clone.hasLoaded = false;
+        clone.initialize();
+
+        return clone;
+    }
+
+    public void stagger()
+    {
+        OnStagger?.Invoke();
     }
 }

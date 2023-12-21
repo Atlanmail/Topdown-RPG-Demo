@@ -26,6 +26,7 @@ public class EntityAttackState : EntityBaseState
         _transform = _ctx.transform;
         _isFinished = false;
         _hasSwungRight = false;
+        _hasSwungLeft=false;
 
         _hitbox = _ctx.attackHitbox;
         _entityData = _ctx.entityData;
@@ -40,6 +41,11 @@ public class EntityAttackState : EntityBaseState
     }
     public override void CheckSwitchStates()
     {
+        if (_ctx.staggered)
+        {
+            SwitchState(_factory.Stagger());
+            return;
+        }
         if (_isFinished)
         {
             SwitchState(_factory.Idle());
@@ -67,7 +73,7 @@ public class EntityAttackState : EntityBaseState
     }
 
     public override void ExitState()
-    {
+    {  
         Debug.Log("Exited attack");
         _ctx.attackButtonPressed = false;
 
@@ -132,16 +138,28 @@ public class EntityAttackState : EntityBaseState
        
 
     }
+
+    void playStagger()
+    {
+        _hasSwungLeft = false;
+        _hasSwungRight = false;
+        _animator.Play("Stagger");
+    }
     public void onHitboxCollision(GameObject otherGameObject)
     {
         Hurtbox hurtboxHit = otherGameObject.GetComponent<Hurtbox>();
-
+        Blockbox blockboxHit = otherGameObject.GetComponent<Blockbox>();
         ///Debug.Log(otherGameObject);
 
         if (hurtboxHit != null)
         {
             
             hurtboxHit.Damage(_entityData, _attackData);
+        }
+
+        if (blockboxHit != null)
+        {
+            blockboxHit.Damage(_entityData, _attackData);
         }
     }
 

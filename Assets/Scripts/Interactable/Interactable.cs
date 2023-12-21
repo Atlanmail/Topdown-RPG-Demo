@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour, IDamagable
 {
     
 
@@ -12,10 +12,14 @@ public class Interactable : MonoBehaviour
     /// </summary>
     HurtboxManager _manager;
 
+    private float _currentHealth;
+
+    public float currentHealth { get { return _currentHealth; } }
+    public float maxHealth { get { return interactableData.MaxHealth; } }
     
     void Start()
     {
-        interactableData.onLoad();
+        _currentHealth = interactableData.MaxHealth;
 
         _manager = GetComponent<HurtboxManager>();
         _manager.OnTakeDamage += onDamage;
@@ -41,9 +45,26 @@ public class Interactable : MonoBehaviour
     {
         
     }
-
-    void onDamage(EntityData entityData,AttackData attackData)
+    private void onDamage(EntityData entityData, AttackData attackData)
     {
-        interactableData.damage(attackData);
+        damage(attackData);
+    }
+    public void damage(AttackData attackData)
+    {
+
+        float damageAmount = attackData.physicalDamage;
+        _currentHealth -= damageAmount;
+
+        Debug.Log(this + " " + _currentHealth);
+        if (_currentHealth <= 0)
+        {
+            _currentHealth = 0;
+            die();
+        }
+    }
+
+    public void die()
+    {
+        Debug.Log("I died");
     }
 }
