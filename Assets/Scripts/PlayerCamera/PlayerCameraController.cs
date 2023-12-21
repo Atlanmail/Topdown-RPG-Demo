@@ -15,7 +15,7 @@ public class PlayerCameraController : MonoBehaviour
     /// <summary>
     /// camera settings
     /// </summary>
-    Vector3 _cameraOffset;
+    [SerializeField] Vector3 _cameraOffset;
     private float _cameraSpeed = 0.125f;
     private Vector3 cameraVelocity = Vector3.zero;
 
@@ -27,7 +27,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         _cameraTransform = _camera.transform;
 
-        _cameraOffset = new Vector3(0, 7, -3);
+        ///_cameraOffset = new Vector3(0, 7, -3);
     }
 
     // Update is called once per frame

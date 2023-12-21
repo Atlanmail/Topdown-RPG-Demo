@@ -171,6 +171,24 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _movementInput = movementInput;
     }
 
+    public void MoveTo(Vector3 target)
+    {
+        Vector3 subtractedVector = (target - charController.transform.position);
+
+        Vector2 newMovementInput = new Vector2(subtractedVector.x, subtractedVector.z);
+
+        if (newMovementInput.magnitude < 1f) /// if its only a small change don't move
+        {
+            _movementInput = Vector2.zero;
+        }
+        else
+        {
+            _movementInput = newMovementInput.normalized;
+        }
+        
+
+    }
+
     void entityDataSetup()
     {
         _entityData = _entityData.Clone();
