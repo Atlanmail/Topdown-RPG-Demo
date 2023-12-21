@@ -6,12 +6,17 @@ public class NPCController : EntityController
 {
 
     [SerializeField] NPCBehavior behavior;
+    Transform _transform;
+
+
+    public Transform Transform { get { return _transform; } }
 
     private void Awake()
     {
         _entityStateMachine = GetComponent<EntityStateMachine>();
 
         behavior = new AttackBehavior(this);
+        _transform = transform;
 
         ///behavior.setController(this);
     }

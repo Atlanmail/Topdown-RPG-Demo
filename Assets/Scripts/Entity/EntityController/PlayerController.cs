@@ -14,7 +14,13 @@ public class PlayerController : EntityController
 
     private bool sprintButtonPressed = false;
 
+    PlayerTracker _playerTracker;
 
+    private void Awake()
+    {
+        _playerTracker = PlayerTracker.Instance;
+        _playerTracker.setPlayer(this.gameObject);
+    }
     void Start()
     {
         
