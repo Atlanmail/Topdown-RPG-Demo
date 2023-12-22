@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fceb3847dc9f0ce45a7c722b67abeb16, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  _maxHealth: 200
-  _attackPower: 0
+  _maxHealth: 100
+  _attackPower: 5
   _speed: 5
   rotationSpeed: 15
   attackData: {fileID: 11400000, guid: c1f2b4bd5e5959a41952e3003c9d444c, type: 2}

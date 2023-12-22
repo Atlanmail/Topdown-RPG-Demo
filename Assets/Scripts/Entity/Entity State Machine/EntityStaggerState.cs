@@ -45,6 +45,13 @@ public class EntityStaggerState : EntityBaseState
 
     public override void CheckSwitchStates()
     {
+
+        if (_ctx.isDead)
+        {
+            SwitchState(_factory.Death());
+            return;
+        }
+
         if (_isFinished)
         {
             SwitchState(_factory.Idle());

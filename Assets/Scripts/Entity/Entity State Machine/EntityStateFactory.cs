@@ -86,4 +86,18 @@ public class EntityStateFactory
 
         return state as EntityStaggerState;
     }
+
+    public virtual EntityDeathState Death()
+    {
+        EntityBaseState state;
+
+        if (!_states.TryGetValue("Death", out state) || state == null)
+        {
+            // If "Idle" state does not exist or is null, create a new state
+            state = new EntityDeathState(_context, this);
+            _states["Death"] = state;
+        }
+
+        return state as EntityDeathState;
+    }
 }

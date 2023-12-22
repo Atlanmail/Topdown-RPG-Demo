@@ -41,6 +41,13 @@ public class EntityAttackState : EntityBaseState
     }
     public override void CheckSwitchStates()
     {
+
+        if (_ctx.isDead)
+        {
+            SwitchState(_factory.Death());
+            return;
+        }
+
         if (_ctx.staggered)
         {
             SwitchState(_factory.Stagger());
@@ -49,6 +56,7 @@ public class EntityAttackState : EntityBaseState
         if (_isFinished)
         {
             SwitchState(_factory.Idle());
+            return;
         }
     }
 
@@ -59,7 +67,7 @@ public class EntityAttackState : EntityBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Entered attack");
+        ///Debug.Log("Entered attack");
         _isFinished = false;
         _ctx.attackButtonPressed = false;
         _hasSwungRight = false;
@@ -74,7 +82,7 @@ public class EntityAttackState : EntityBaseState
 
     public override void ExitState()
     {  
-        Debug.Log("Exited attack");
+        ///Debug.Log("Exited attack");
         _ctx.attackButtonPressed = false;
 
         ///_animator.SetBool("isLeftSwing", false);
@@ -107,7 +115,7 @@ public class EntityAttackState : EntityBaseState
 
     void playRightSwing()
     {
-        Debug.Log("Played right swing");
+        ///Debug.Log("Played right swing");
         _hasSwungRight = true;
         _ctx.attackButtonPressed = false;
         _animator.SetTrigger("Right Swing");
@@ -117,7 +125,7 @@ public class EntityAttackState : EntityBaseState
 
     void playLeftSwing()
     {
-        Debug.Log("Played left swing");
+        ////Debug.Log("Played left swing");
         _hasSwungLeft = true;
         _ctx.attackButtonPressed = false;
         _animator.SetTrigger("Left Swing");

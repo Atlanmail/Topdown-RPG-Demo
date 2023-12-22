@@ -47,6 +47,8 @@ public class EntityData : ScriptableObject,  IDamagable
     public delegate void StaggerEventHandler();
     public event StaggerEventHandler OnStagger;
 
+    public delegate void DeathEventHandler();
+    public event DeathEventHandler OnDeath;
 
     public void damage(AttackData attackData)
     {
@@ -55,7 +57,7 @@ public class EntityData : ScriptableObject,  IDamagable
         _currentHealth -= damageAmount;
 
         Debug.Log(this + " " + _currentHealth);
-        if (_currentHealth <= 0 )
+        if (_currentHealth <= 0.2f )
         {
             _currentHealth = 0;
             die();
@@ -66,7 +68,9 @@ public class EntityData : ScriptableObject,  IDamagable
 
     public void die()
     {
-        Debug.Log("Died");
+
+        ///Debug.Log("die");
+        OnDeath?.Invoke();
     }
 
 
@@ -95,4 +99,6 @@ public class EntityData : ScriptableObject,  IDamagable
     {
         OnStagger?.Invoke();
     }
+
+    
 }

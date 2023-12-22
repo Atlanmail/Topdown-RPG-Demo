@@ -40,6 +40,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     [SerializeField] protected Hitbox _attackHitbox;
     protected AttackData _attackData;
     protected bool _isStaggered = false;
+    protected bool _isDead = false;
 
     /// <summary>
     /// getters and setters
@@ -72,6 +73,8 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     public BlockboxManager blockboxManager { get => _blockboxManager; }
 
     public bool staggered { get => _isStaggered; set { _isStaggered = value; } }
+    public bool isDead { get => _isDead; }
+
     void Awake()
     {
 
@@ -116,6 +119,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         /// 
 
         _entityData.OnStagger += onStagger;
+        _entityData.OnDeath += onDeath;
 
     }
     void OnEnable()
@@ -196,7 +200,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     public void Attack()
     {
-        Debug.Log("Attacked!");
+        ///Debug.Log("Attacked!");
         _attackButtonPressed = true;
     }
 
@@ -274,5 +278,11 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
             EntityStaggerState myState = _currentState as EntityStaggerState;
             myState.staggerEnd();
         }
+    }
+
+    public void onDeath()
+    {
+        _isDead = true;
+        ///Debug.Log("_isDead " +  _isDead);
     }
 }

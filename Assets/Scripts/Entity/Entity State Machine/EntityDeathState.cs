@@ -3,55 +3,45 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EntityIdleState : EntityBaseState
+public class EntityDeathState : EntityBaseState
 {
     protected Animator _animator;
 
-    public EntityIdleState(EntityStateMachine currentContext, EntityStateFactory factory)
-    : base(currentContext, factory) {
+    protected float oldHeight;
+    protected float layHeight = 0.1f;
+
+    public EntityDeathState(EntityStateMachine currentContext, EntityStateFactory factory)
+    : base(currentContext, factory)
+    {
         _animator = _ctx.Animator;
     }
-    
+
     public override void CheckSwitchStates()
     {
-        ///Debug.Log("Idle checking");
-        ///
-        if (_ctx.isDead)
+        if (_ctx.isDead == false)
         {
-            SwitchState(_factory.Death());
-            return;
-        }
-        if (_ctx.staggered)
-        {
-            SwitchState(_factory.Stagger());
-            return;
-        }
-        if (_ctx.attackButtonPressed == true)
-        {
-            SwitchState(_factory.Attack());
-            return;
-        }
-
-        if (_ctx.movementInput != Vector2.zero)
-        {
-            SwitchState(_factory.Walk());
+            SwitchState(_factory.Idle());
             return;
         }
     }
 
     public override void EnterState()
     {
-        ///Debug.Log("Entered Idle");
+        oldHeight = _ctx.charController.height;
+        _ctx.charController.height = layHeight;
+        _animator.Play("Death");
+        _ctx.charController.Move(Vector3.forward * 0.05f);
     }
 
     public override void ExitState()
     {
         ///Debug.Log("Exited Idle");
+        _ctx.charController.height = oldHeight;
     }
 
     public override void FixedUpdateState()
     {
-        
+
     }
 
     public override void Cleanup()
@@ -72,12 +62,12 @@ public class EntityIdleState : EntityBaseState
     {
         handleAnimation();
         CheckSwitchStates();
-        
+
     }
 
     protected virtual void handleAnimation()
     {
-        
+
     }
 
 }

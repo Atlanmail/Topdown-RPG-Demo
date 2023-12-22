@@ -36,7 +36,11 @@ public class EntityWalkState : EntityBaseState
 
     public override void CheckSwitchStates()
     {
-
+        if (_ctx.isDead)
+        {
+            SwitchState(_factory.Death());
+            return;
+        }
 
         if (_ctx.staggered)
         {

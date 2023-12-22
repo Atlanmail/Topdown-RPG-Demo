@@ -275,7 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 330585545}
   _target: {fileID: 351953683}
-  _cameraOffset: {x: 0, y: -5, z: -5}
+  _cameraOffset: {x: 0, y: 5, z: -5}
 --- !u!4 &351953683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8608426213931296664, guid: b645538ab494d9c4ca8780171d06e584,
@@ -4452,6 +4452,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1346733309787667125, guid: b645538ab494d9c4ca8780171d06e584,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3087516819240654348, guid: b645538ab494d9c4ca8780171d06e584,
         type: 3}
       propertyPath: _cameraController
@@ -4460,7 +4465,7 @@ PrefabInstance:
     - target: {fileID: 8608426213931296664, guid: b645538ab494d9c4ca8780171d06e584,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.30789685
+      value: 6.27
       objectReference: {fileID: 0}
     - target: {fileID: 8608426213931296664, guid: b645538ab494d9c4ca8780171d06e584,
         type: 3}
