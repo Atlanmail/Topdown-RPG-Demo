@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityAttackState : EntityBaseState
+public class EntityAttackState : EntityBaseState, IAttackState
 {
     protected Animator _animator;
     protected Transform _transform;
@@ -15,6 +15,10 @@ public class EntityAttackState : EntityBaseState
     private bool _isFinished = false;
     private bool _hasSwungRight = false;
     private bool _hasSwungLeft = false;
+
+    private int _attackState = 0; /// 0 is not attacking, 1 is windup, 2 is damage portion, 3 is cooldown
+
+    public int attackState { get => _attackState; }
 
     protected bool _attackButtonPressed;
     
@@ -53,6 +57,14 @@ public class EntityAttackState : EntityBaseState
             SwitchState(_factory.Stagger());
             return;
         }
+
+
+        /// conditions for blocking
+        if (_ctx.blockButtonPressed && _attackState < 2) 
+        {
+            SwitchState(_factory.Block());
+            return;
+        }
         if (_isFinished)
         {
             SwitchState(_factory.Idle());
@@ -69,7 +81,7 @@ public class EntityAttackState : EntityBaseState
     {
         ///Debug.Log("Entered attack");
         _isFinished = false;
-        _ctx.attackButtonPressed = false;
+        _ctx.refreshInput();
         _hasSwungRight = false;
         _hasSwungLeft = false;
 
@@ -147,13 +159,7 @@ public class EntityAttackState : EntityBaseState
 
     }
 
-    void playStagger()
-    {
-        _hasSwungLeft = false;
-        _hasSwungRight = false;
-        _animator.Play("Stagger");
-    }
-    public void onHitboxCollision(GameObject otherGameObject)
+    private void onHitboxCollision(GameObject otherGameObject)
     {
         Hurtbox hurtboxHit = otherGameObject.GetComponent<Hurtbox>();
         Blockbox blockboxHit = otherGameObject.GetComponent<Blockbox>();
@@ -161,34 +167,50 @@ public class EntityAttackState : EntityBaseState
 
         if (hurtboxHit != null)
         {
-            
-            hurtboxHit.Damage(_entityData, _attackData);
+            ///Debug.Log("Hit hurtbox");
+            onHurtboxHit(hurtboxHit);
         }
-
+        ///Debug.Log(blockboxHit);
         if (blockboxHit != null)
         {
-            blockboxHit.Damage(_entityData, _attackData);
+            onBlockboxHit(blockboxHit);
         }
     }
 
+    protected virtual void onHurtboxHit(Hurtbox hurtboxHit)
+    {
+        hurtboxHit.Damage(_entityData, _attackData);
+    }
+
+    protected virtual void onBlockboxHit(Blockbox blockboxHit)
+    {
+        _ctx.Stagger();
+    }
+
+
+
     public void onAttackWindupStart()
     {
-        
+        _attackState = 1;
     }
 
     public void onAttackAnimationStart()
     {
         _hitbox.colliderEnable();
+        _attackState = 2;
     }
 
     public void onAttackAnimationEnd()
     {
         _hitbox.colliderDisable();
         checkIfFinished();
+
+        _attackState = 3;
     }
 
     public void onAttackAnimationRecovered()
     {
         checkIfFinished();
+        _attackState = 0;
     }
 }

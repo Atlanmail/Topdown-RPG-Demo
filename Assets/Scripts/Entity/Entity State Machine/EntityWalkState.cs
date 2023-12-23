@@ -48,9 +48,17 @@ public class EntityWalkState : EntityBaseState
             return;
         }
 
+
+
         if (_ctx.attackButtonPressed == true)
         {
             SwitchState(_factory.Attack());
+            return;
+        }
+
+        if (_ctx.blockButtonPressed == true)
+        {
+            SwitchState(_factory.Block());
             return;
         }
 
@@ -59,6 +67,7 @@ public class EntityWalkState : EntityBaseState
         /// 
         if (_movementInput != Vector2.zero)
         {
+            ///Debug.Log("From idle " + _movementInput.ToString());
             return;
         }
 
@@ -68,6 +77,7 @@ public class EntityWalkState : EntityBaseState
 
         if (curVelocity.magnitude < 0.3f)
         {
+            ///Debug.Log("Switched to idle");
             SwitchState(_factory.Idle());
             return;
         }

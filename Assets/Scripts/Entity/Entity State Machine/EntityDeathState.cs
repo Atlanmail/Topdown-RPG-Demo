@@ -35,7 +35,8 @@ public class EntityDeathState : EntityBaseState
 
     public override void ExitState()
     {
-        ///Debug.Log("Exited Idle");
+        ///Debug.Log("Exited Idle")
+        /// Debug.Log(oldHeight);
         _ctx.charController.height = oldHeight;
     }
 

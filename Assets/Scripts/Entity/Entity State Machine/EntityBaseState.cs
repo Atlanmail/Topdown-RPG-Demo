@@ -18,8 +18,9 @@ public abstract class EntityBaseState
     protected EntityBaseState _currentSubState;
 
 
-    protected bool _isRootState = true;
+    protected bool _isRootState = false;
 
+    public EntityBaseState currentSubState { get { return _currentSubState; } }
     public EntityBaseState(EntityStateMachine currentContext, EntityStateFactory factory)
     {
         _ctx = currentContext;
@@ -54,6 +55,26 @@ public abstract class EntityBaseState
 
         if (_currentSubState != null) { 
             _currentSubState.UpdateStates();
+        }
+    }
+
+    public void FixedUpdateStates()
+    {
+        FixedUpdateState();
+
+        if (_currentSubState != null)
+        {
+            _currentSubState.FixedUpdateStates();
+        }
+    }
+     
+    public void LateUpdateStates()
+    {
+        LateUpdateState();
+
+        if (_currentSubState != null)
+        {
+            _currentSubState.LateUpdateStates();
         }
     }
 

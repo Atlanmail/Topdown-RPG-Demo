@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using System;
+using Assets.Scripts.Entity.Entity_State_Machine;
 
 public class EntityStateFactory
 {
@@ -39,26 +40,12 @@ public class EntityStateFactory
         {
             // If "Idle" state does not exist or is null, create a new state
             state = new EntityWalkState(_context, this);
-            _states["Idle"] = state;
+            _states["Walk"] = state;
         }
 
         return state;
     }
 
-    public virtual EntityBaseState Jump()
-    {
-        return new EntityJumpState(_context, this);
-    }
-
-    public virtual EntityBaseState Grounded()
-    {
-        return new EntityGroundedState(_context, this);
-    }
-
-    public virtual EntityBaseState Run()
-    {
-        return new EntityRunState(_context, this);
-    }
 
     public virtual EntityAttackState Attack() {
         EntityBaseState state;
@@ -99,5 +86,67 @@ public class EntityStateFactory
         }
 
         return state as EntityDeathState;
+    }
+
+    public virtual EntityBlockState Block()
+    {
+        EntityBaseState state;
+
+        if (!_states.TryGetValue("Block", out state) || state == null)
+        {
+            // If "Idle" state does not exist or is null, create a new state
+            state = new EntityBlockState(_context, this);
+            _states["Block"] = state;
+        }
+
+        return state as EntityBlockState;
+    }
+
+    public virtual EntityGroundedState Grounded()
+    {
+        EntityBaseState state;
+        if (!_states.TryGetValue("Grounded", out state) || state == null)
+        {
+            state = new EntityGroundedState(_context, this);
+            _states["Grounded"] = state;
+        }
+
+        return state as EntityGroundedState;
+    }
+
+    public virtual EntityAirborneState Airborne()
+    {
+        EntityBaseState state;
+        if (!_states.TryGetValue("Airborne", out state) || state == null)
+        {
+            state = new EntityAirborneState(_context, this);
+            _states["Airborne"] = state;
+        }
+
+        return state as EntityAirborneState;
+    }
+
+    public virtual EntityJumpState Jump()
+    {
+        EntityBaseState state;
+        if (!_states.TryGetValue("Jump", out state) || state == null)
+        {
+            state = new EntityJumpState(_context, this);
+            _states["Jump"] = state;
+        }
+
+        return state as EntityJumpState;
+    }
+
+    public virtual EntityFallingState Fall()
+    {
+        EntityBaseState state;
+        if (!_states.TryGetValue("Fall", out state) || state == null)
+        {
+            state = new EntityFallingState(_context, this);
+            _states["Fall"] = state;
+        }
+
+        return state as EntityFallingState;
     }
 }

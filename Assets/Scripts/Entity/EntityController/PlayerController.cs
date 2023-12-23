@@ -37,6 +37,7 @@ public class PlayerController : EntityController
         _playerActions.Gameplay.MovementDirection.performed += MovementDirection_performed;
         _playerActions.Gameplay.Sprint.performed += Sprint_Performed;
         _playerActions.Gameplay.Jump.performed += Jump_performed;
+        _playerActions.Gameplay.Shield.performed += OnShield;
     }
 
    
@@ -74,6 +75,7 @@ public class PlayerController : EntityController
     {
         
         Vector2 movementInput = context.ReadValue<Vector2>();
+        ///Debug.Log(movementInput);
         _entityStateMachine.Move(movementInput);
     }
 
@@ -85,9 +87,22 @@ public class PlayerController : EntityController
 
     private void OnCast1(InputAction.CallbackContext context)
     {
-        Debug.Log("Cast1 pressed");
+        _entityStateMachine.revive();
     }
 
+    private void OnShield(InputAction.CallbackContext context)
+    {
+        float shieldInput = context.ReadValue<float>();
+
+        if (shieldInput == 1)
+        {
+            _entityStateMachine.startBlock();
+        }
+        else
+        {
+            _entityStateMachine.endBlock();
+        }
+    }
    
 
     

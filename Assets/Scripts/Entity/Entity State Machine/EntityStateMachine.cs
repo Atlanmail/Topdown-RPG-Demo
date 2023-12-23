@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
@@ -20,7 +21,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     /// <summary>
     /// state factory
     /// </summary>
-    protected EntityBaseState _currentState;
+    [SerializeField] protected EntityBaseState _currentState;
     EntityStateFactory _states;
     /// movement variables
 
@@ -34,13 +35,16 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     protected BlockboxManager _blockboxManager;
 
     /// <summary>
-    /// attack variables and hitbox
+    /// input variables
     /// </summary>
     protected bool _attackButtonPressed = false;
     [SerializeField] protected Hitbox _attackHitbox;
     protected AttackData _attackData;
     protected bool _isStaggered = false;
     protected bool _isDead = false;
+
+    protected bool _blockButtonPressed = false;
+    protected bool _jumpButtonPressed = false;
 
     /// <summary>
     /// getters and setters
@@ -56,8 +60,8 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
-    
-
+    public bool blockButtonPressed { get => _blockButtonPressed; }
+    public bool jumpButtonPressed { get => _jumpButtonPressed; }
     public EntityData entityData { get => _entityData; }
     public float speed { get => _entityData.speed;}
 
@@ -72,11 +76,13 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     public HurtboxManager hurtboxManager { get => _hurtboxManager; }
     public BlockboxManager blockboxManager { get => _blockboxManager; }
 
-    public bool staggered { get => _isStaggered; set { _isStaggered = value; } }
+    public bool staggered { get => _isStaggered; }
     public bool isDead { get => _isDead; }
 
     void Awake()
     {
+
+        clearInput();
 
         /// setup entitydata
 
@@ -94,8 +100,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         // setup state
 
         _states = new EntityStateFactory(this);
-        _currentState = _states.Idle();
-        _currentState.EnterState();
+        
         
         
         
@@ -103,12 +108,12 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Start()
     {
-
+        initialize();
 
 
         /// setup hurtbox manager
         setupHurtboxManager();
-
+        setupBlockboxManager();
 
         _attackHitbox.addIgnoreColliders(hurtboxManager);
         _attackHitbox.addIgnoreColliders(blockboxManager);
@@ -118,7 +123,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         /// setup entity data events
         /// 
 
-        _entityData.OnStagger += onStagger;
+        _entityData.OnStagger += Stagger;
         _entityData.OnDeath += onDeath;
 
     }
@@ -135,20 +140,26 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     void Update()
     {
         ///Debug.Log(_currentState.ToString());
-        _currentState.UpdateState();
+        _currentState.UpdateStates();
     }
 
     void FixedUpdate()
     {
-        _currentState.FixedUpdateState();
+        _currentState.FixedUpdateStates();
     }
 
     void LateUpdate()
     {
-        _currentState.LateUpdateState();
+        _currentState.LateUpdateStates();
+    }
+    protected virtual void initialize()
+    {
+        _currentState = _states.Grounded();
+        _currentState.EnterState();
+        _isDead = false;
+        _entityData.initialize();
     }
 
-    
     public void Shove(Vector3 positionChange, float timeElapsed)
     {
         throw new System.NotImplementedException();
@@ -162,8 +173,13 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     void setupHurtboxManager()
     {
         _hurtboxManager = GetComponent<HurtboxManager>();
-
+        _hurtboxManager.Enable();
         _hurtboxManager.OnTakeDamage += onDamage;
+    }
+
+    void setupBlockboxManager()
+    {
+        _blockboxManager.Disable();
     }
     void onDamage(EntityData entityData, AttackData damageAmount)
     {
@@ -204,13 +220,13 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _attackButtonPressed = true;
     }
 
-    void onStagger()
+    public void Stagger()
     {
         _isStaggered = true;
     }
     public void OnJump()
     {
-        Debug.Log("Jump");
+        _jumpButtonPressed = true;
     }
 
     public void startSprint()
@@ -225,27 +241,42 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     public void onAttackWindupStart()
     {
-        if (_currentState is EntityAttackState)
+        if (_currentState is IAttackState)
         {
-            EntityAttackState myState = _currentState as EntityAttackState;
+            IAttackState myState = _currentState as IAttackState;
+            myState.onAttackWindupStart();
+        }
+        else if (_currentState.currentSubState is IAttackState)
+        {
+            IAttackState myState = _currentState.currentSubState as IAttackState;
             myState.onAttackWindupStart();
         }
     }
 
     public void onAttackAnimationStart()
     {
-        if (_currentState is EntityAttackState)
+        if (_currentState is IAttackState)
         {
-            EntityAttackState myState = _currentState as EntityAttackState;
+            IAttackState myState = _currentState as IAttackState;
+            myState.onAttackAnimationStart();
+        }
+        else if (_currentState.currentSubState is IAttackState)
+        {
+            IAttackState myState = _currentState.currentSubState as IAttackState;
             myState.onAttackAnimationStart();
         }
     }
 
     public void onAttackAnimationEnd()
     {
-        if (_currentState is EntityAttackState)
+        if (_currentState is IAttackState)
         {
-            EntityAttackState myState = _currentState as EntityAttackState;
+            IAttackState myState = _currentState as IAttackState;
+            myState.onAttackAnimationEnd();
+        }
+        else if (_currentState.currentSubState is IAttackState)
+        {
+            IAttackState myState = _currentState.currentSubState as IAttackState;
             myState.onAttackAnimationEnd();
         }
     }
@@ -254,7 +285,12 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     {
         if (_currentState is EntityAttackState)
         {
-            EntityAttackState myState = _currentState as EntityAttackState;
+            IAttackState myState = _currentState as IAttackState;
+            myState.onAttackAnimationRecovered();
+        }
+        else if (_currentState.currentSubState is IAttackState)
+        {
+            IAttackState myState = _currentState.currentSubState as IAttackState;
             myState.onAttackAnimationRecovered();
         }
     }
@@ -284,5 +320,61 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     {
         _isDead = true;
         ///Debug.Log("_isDead " +  _isDead);
+    }
+
+    public void startBlock()
+    {
+        _blockButtonPressed = true;
+    }
+
+    public void endBlock()
+    {
+        _blockButtonPressed = false;
+    }
+
+    /// <summary>
+    /// refreshes the input whenever a state changes system
+    /// </summary>
+    public void refreshInput()
+    {
+        _movementInput = Vector2.zero;
+        _blockButtonPressed = false;
+        _attackButtonPressed = false;
+    }
+    /// <summary>
+    /// revives the entity, resetting entitydata and giving them back to an idle state.
+    /// </summary>
+    public void revive()
+    {
+        _isDead = false;
+        _entityData.initialize();
+        
+    }
+
+    /// <summary>
+    /// teleports to a specific transform
+    /// </summary>
+    /// <param name="target"></param>
+    public void bringTo(Transform target)
+    {
+        transform.position = target.position;
+        transform.rotation = target.rotation;
+    }
+    /// <summary>
+    /// clears the input, useful to prevent queued inputs
+    /// </summary>
+    public void clearInput()
+    {
+        _jumpButtonPressed = false;
+        _blockButtonPressed= false;
+        _attackButtonPressed = false;
+    }
+    /// <summary>
+    /// checks if the entity is grounded
+    /// </summary>
+    /// <returns></returns>
+    public bool checkIsGrounded()
+    {
+        return charController.isGrounded;
     }
 }

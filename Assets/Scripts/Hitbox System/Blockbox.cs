@@ -42,6 +42,6 @@ public class Blockbox : MonoBehaviour
 
     public virtual void Damage(EntityData entityData, AttackData attackData)
     {
-        Manager.takeDamage(entityData, attackData);
+        Debug.Log("Blockbox Damaged");
     }
 }

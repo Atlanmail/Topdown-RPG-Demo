@@ -52,7 +52,9 @@ public class BlockboxManager : MonoBehaviour
     {
         OnBlockHit?.Invoke(entityData, attackData);
     }
-
+    /// <summary>
+    /// enables the blockboxes
+    /// </summary>
     public void Enable()
     {
         foreach (Blockbox blockbox in _blockboxList)
@@ -62,7 +64,9 @@ public class BlockboxManager : MonoBehaviour
 
         _enabled = true;
     }
-
+    /// <summary>
+    /// disables the blockboxes
+    /// </summary>
     public void Disable()
     {
 
