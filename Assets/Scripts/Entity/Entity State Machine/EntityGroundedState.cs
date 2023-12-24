@@ -19,8 +19,8 @@ public class EntityGroundedState : EntityBaseState
 
 
         bool jumpButtonPressed = _ctx.jumpButtonPressed;
-        Debug.Log(jumpButtonPressed);
-        if (jumpButtonPressed)
+        ///Debug.Log(jumpButtonPressed);
+        if (jumpButtonPressed || !_ctx.isGrounded())
         {
             Debug.Log("Switching to airborne");
             SwitchState(_factory.Airborne());
