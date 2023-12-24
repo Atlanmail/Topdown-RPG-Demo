@@ -138,7 +138,7 @@ public class EntityStateFactory
         return state as EntityJumpState;
     }
 
-    public virtual EntityFallingState Fall()
+    public virtual EntityFallingState Falling()
     {
         EntityBaseState state;
         if (!_states.TryGetValue("Fall", out state) || state == null)

@@ -7,12 +7,25 @@ public class EntityGroundedState : EntityBaseState
     public EntityGroundedState(EntityStateMachine currentContext, EntityStateFactory factory) : base(currentContext, factory)
     {
         _isRootState = true;
-        InitializeSubState();
+        ///InitializeSubState();
     }
 
     public override void CheckSwitchStates()
     {
-        
+        if (_ctx.isDead)
+        {
+            return;
+        }
+
+
+        bool jumpButtonPressed = _ctx.jumpButtonPressed;
+        Debug.Log(jumpButtonPressed);
+        if (jumpButtonPressed)
+        {
+            Debug.Log("Switching to airborne");
+            SwitchState(_factory.Airborne());
+            return;
+        }
     }
 
     public override void Cleanup()
@@ -22,7 +35,8 @@ public class EntityGroundedState : EntityBaseState
 
     public override void EnterState()
     {
-        
+        _ctx.ClearInput();
+        InitializeSubState();
     }
 
     public override void ExitState()

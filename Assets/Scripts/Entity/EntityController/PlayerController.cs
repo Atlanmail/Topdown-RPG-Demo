@@ -53,6 +53,7 @@ public class PlayerController : EntityController
     }
     private void Jump_performed(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump pressed");
         _entityStateMachine.OnJump();
     }
     

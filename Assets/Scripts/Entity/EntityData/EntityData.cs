@@ -29,6 +29,10 @@ public class EntityData : ScriptableObject,  IDamagable
 
     private bool hasLoaded = false;
 
+    /// jump variables
+    /// 
+    [SerializeField] private int _jumpFrames = 24; /// frames jump will last
+    private float _jumpHeight = 3.5f; /// jump height
     /// <summary>
     /// getters and setters
     /// </summary>
@@ -38,6 +42,9 @@ public class EntityData : ScriptableObject,  IDamagable
     public float speed { get { return _speed; } }
 
     public float attackPower { get { return _attackPower; } }
+    public float jumpHeight { get { return _jumpHeight; } }
+    public int jumpFrames { get { return _jumpFrames; } }
+
 
     [SerializeField] public AttackData attackData;
     /// <summary>

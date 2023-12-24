@@ -61,7 +61,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     public bool attackButtonPressed { get => _attackButtonPressed; set => _attackButtonPressed = value; }
 
     public bool blockButtonPressed { get => _blockButtonPressed; }
-    public bool jumpButtonPressed { get => _jumpButtonPressed; }
+    public bool jumpButtonPressed { get { return _jumpButtonPressed; } }
     public EntityData entityData { get => _entityData; }
     public float speed { get => _entityData.speed;}
 
@@ -81,8 +81,6 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Awake()
     {
-
-        clearInput();
 
         /// setup entitydata
 
@@ -109,7 +107,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     void Start()
     {
         initialize();
-
+        ClearInput();
 
         /// setup hurtbox manager
         setupHurtboxManager();
@@ -139,8 +137,11 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Update()
     {
-        ///Debug.Log(_currentState.ToString());
+        Debug.Log("Currently in " +_currentState.ToString() + "Substate " + _currentState.currentSubState.ToString());
+        
         _currentState.UpdateStates();
+
+        ///Debug.Log(_currentState.ToString());
     }
 
     void FixedUpdate()
@@ -226,7 +227,10 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     }
     public void OnJump()
     {
+        ///Debug.Log("On jump " + _jumpButtonPressed);
+        Debug.Log("Jump button pressed from onJump");
         _jumpButtonPressed = true;
+        ///
     }
 
     public void startSprint()
@@ -363,8 +367,9 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     /// <summary>
     /// clears the input, useful to prevent queued inputs
     /// </summary>
-    public void clearInput()
+    public void ClearInput()
     {
+        Debug.Log("Clear input");
         _jumpButtonPressed = false;
         _blockButtonPressed= false;
         _attackButtonPressed = false;
@@ -373,7 +378,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     /// checks if the entity is grounded
     /// </summary>
     /// <returns></returns>
-    public bool checkIsGrounded()
+    public bool isGrounded()
     {
         return charController.isGrounded;
     }

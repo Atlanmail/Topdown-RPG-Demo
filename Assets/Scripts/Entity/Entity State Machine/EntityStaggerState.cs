@@ -72,7 +72,7 @@ public class EntityStaggerState : EntityBaseState
 
     public override void ExitState()
     {
-        _ctx.staggered = false;
+        _ctx.staggerEnd();
     }
 
     public override void FixedUpdateState()

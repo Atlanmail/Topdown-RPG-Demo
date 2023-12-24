@@ -47,7 +47,7 @@ public class EntityIdleState : EntityBaseState
 
     public override void EnterState()
     {
-        ///Debug.Log("Entered Idle");
+        ///Debug.Log("From Idle, Is grounded " + _ctx.isGrounded());
     }
 
     public override void ExitState()

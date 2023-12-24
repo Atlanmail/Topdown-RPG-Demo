@@ -85,13 +85,11 @@ public abstract class EntityBaseState
         
         newState.EnterState();
 
-        _ctx.CurrentState = newState;
-
         if (_isRootState)
         {
             _ctx.CurrentState = newState;
         } else {
-            _currentSuperState.SetSubState(newState);
+             _currentSuperState.SetSubState(newState);
         }
 
        Cleanup();
@@ -99,11 +97,24 @@ public abstract class EntityBaseState
     }
     protected void SetSuperState(EntityBaseState newSuperState) 
     {
+        if (_currentSuperState != null)
+        {
+            _currentSuperState.ExitState();
+        }
+
+
         _currentSuperState = newSuperState;
+        ///_currentSuperState.EnterState();
         _isRootState = false;
     }
     protected void SetSubState(EntityBaseState newSubstate) {
+        if (_currentSubState != null)
+        {
+            currentSubState.ExitState();
+        }
         _currentSubState = newSubstate;
+        _currentSubState.EnterState();
+
         newSubstate.SetSuperState(this);
     }
 }
