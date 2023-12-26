@@ -47,7 +47,7 @@ public class EntityStateFactory
     }
 
 
-    public virtual EntityAttackState Attack() {
+    public virtual EntityBaseState Attack() {
         EntityBaseState state;
 
         if (!_states.TryGetValue("Attack", out state) || state == null)
@@ -60,7 +60,7 @@ public class EntityStateFactory
         return state as EntityAttackState;
     }
 
-    public virtual EntityStaggerState Stagger()
+    public virtual EntityBaseState Stagger()
     {
         EntityBaseState state;
 
@@ -74,7 +74,7 @@ public class EntityStateFactory
         return state as EntityStaggerState;
     }
 
-    public virtual EntityDeathState Death()
+    public virtual EntityBaseState Death()
     {
         EntityBaseState state;
 
@@ -88,7 +88,7 @@ public class EntityStateFactory
         return state as EntityDeathState;
     }
 
-    public virtual EntityBlockState Block()
+    public virtual EntityBaseState Block()
     {
         EntityBaseState state;
 
@@ -102,7 +102,7 @@ public class EntityStateFactory
         return state as EntityBlockState;
     }
 
-    public virtual EntityGroundedState Grounded()
+    public virtual EntityBaseState Grounded()
     {
         EntityBaseState state;
         if (!_states.TryGetValue("Grounded", out state) || state == null)
@@ -114,7 +114,7 @@ public class EntityStateFactory
         return state as EntityGroundedState;
     }
 
-    public virtual EntityAirborneState Airborne()
+    public virtual EntityBaseState Airborne()
     {
         EntityBaseState state;
         if (!_states.TryGetValue("Airborne", out state) || state == null)
@@ -126,7 +126,7 @@ public class EntityStateFactory
         return state as EntityAirborneState;
     }
 
-    public virtual EntityJumpState Jump()
+    public virtual EntityBaseState Jump()
     {
         EntityBaseState state;
         if (!_states.TryGetValue("Jump", out state) || state == null)
@@ -138,7 +138,7 @@ public class EntityStateFactory
         return state as EntityJumpState;
     }
 
-    public virtual EntityFallingState Falling()
+    public virtual EntityBaseState Falling()
     {
         EntityBaseState state;
         if (!_states.TryGetValue("Fall", out state) || state == null)

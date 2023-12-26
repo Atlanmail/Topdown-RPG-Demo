@@ -54,6 +54,7 @@ public class EntityStaggerState : EntityBaseState
 
         if (_isFinished)
         {
+            Debug.Log("Entering idle from stagger");
             SwitchState(_factory.Idle());
             return;
         }

@@ -27,7 +27,12 @@ public class Hitbox : MonoBehaviour
     {
        
         _entityStateMachine = transform.root.GetComponent<EntityStateMachine>();
-        _entityData = _entityStateMachine.entityData;
+
+        if (_entityStateMachine != null )
+        {
+            _entityData = _entityStateMachine.entityData;
+        }
+        
         
     }
 
@@ -143,4 +148,10 @@ public class Hitbox : MonoBehaviour
         }
     }
 
+    public void setEntityData(EntityData entityData)
+    {
+        _entityData = entityData;
+    }
+
+    
 }

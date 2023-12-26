@@ -22,7 +22,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     /// state factory
     /// </summary>
     [SerializeField] protected EntityBaseState _currentState;
-    EntityStateFactory _states;
+    protected EntityStateFactory _states;
     /// movement variables
 
     
@@ -79,7 +79,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     public bool staggered { get => _isStaggered; }
     public bool isDead { get => _isDead; }
 
-    void Awake()
+    protected virtual void Awake()
     {
 
         /// setup entitydata
@@ -97,11 +97,17 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         _blockboxManager = GetComponent<BlockboxManager>();
         // setup state
 
+        stateFactorySetup();
+        
+        
+        
+        
+    }
+
+    protected virtual void stateFactorySetup()
+    {
+        ///Debug.Log("old state factory from " + this.gameObject.name);
         _states = new EntityStateFactory(this);
-        
-        
-        
-        
     }
 
     void Start()
@@ -113,9 +119,13 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         setupHurtboxManager();
         setupBlockboxManager();
 
-        _attackHitbox.addIgnoreColliders(hurtboxManager);
-        _attackHitbox.addIgnoreColliders(blockboxManager);
-        _attackHitbox.addIgnoreController(_charController);
+        if (_attackHitbox)
+        {
+            _attackHitbox.addIgnoreColliders(hurtboxManager);
+            _attackHitbox.addIgnoreColliders(blockboxManager);
+            _attackHitbox.addIgnoreController(_charController);
+        }
+        
 
 
         /// setup entity data events
@@ -137,7 +147,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     void Update()
     {
-        Debug.Log("Currently in " +_currentState.ToString() + "Substate " + _currentState.currentSubState.ToString());
+        ///Debug.Log("Currently in " +_currentState.ToString() + "Substate " + _currentState.currentSubState.ToString());
         
         _currentState.UpdateStates();
 
@@ -210,6 +220,8 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
 
     }
 
+    
+
     void entityDataSetup()
     {
         _entityData = _entityData.Clone();
@@ -228,7 +240,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
     public void OnJump()
     {
         ///Debug.Log("On jump " + _jumpButtonPressed);
-        Debug.Log("Jump button pressed from onJump");
+        ///Debug.Log("Jump button pressed from onJump");
         _jumpButtonPressed = true;
         ///
     }
@@ -243,7 +255,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         Debug.Log("End Sprint");
     }
 
-    public void onAttackWindupStart()
+    public virtual void onAttackWindupStart()
     {
         if (_currentState is IAttackState)
         {
@@ -257,7 +269,7 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         }
     }
 
-    public void onAttackAnimationStart()
+    public virtual void onAttackAnimationStart()
     {
         if (_currentState is IAttackState)
         {
@@ -266,12 +278,14 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         }
         else if (_currentState.currentSubState is IAttackState)
         {
+            
             IAttackState myState = _currentState.currentSubState as IAttackState;
+            ///Debug.Log(myState + "");
             myState.onAttackAnimationStart();
         }
     }
 
-    public void onAttackAnimationEnd()
+    public virtual void onAttackAnimationEnd()
     {
         if (_currentState is IAttackState)
         {
@@ -285,9 +299,9 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         }
     }
 
-    public void onAttackAnimationRecovered()
+    public virtual void onAttackAnimationRecovered()
     {
-        if (_currentState is EntityAttackState)
+        if (_currentState is IAttackState)
         {
             IAttackState myState = _currentState as IAttackState;
             myState.onAttackAnimationRecovered();
@@ -299,24 +313,14 @@ public class EntityStateMachine : MonoBehaviour, ICanAttack, IMoveable
         }
     }
 
-    public EntityAttackState GetEntityAttackState()
-    {
-        if (_currentState is EntityAttackState)
-        {
-            return _currentState as EntityAttackState;
-        }
-        else
-        {
-            return _states.Attack();
-        }
-    }
 
     public void staggerEnd()
     {
-        if (_currentState is EntityStaggerState)
+        if (_currentState.currentSubState is EntityStaggerState)
         {
-            EntityStaggerState myState = _currentState as EntityStaggerState;
+            EntityStaggerState myState = _currentState.currentSubState as EntityStaggerState;
             myState.staggerEnd();
+            _isStaggered = false;
         }
     }
 

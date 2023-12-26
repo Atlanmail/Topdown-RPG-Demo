@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ced6cccccb91bf49a51a4ef7c5ab475, type: 3}
   m_Name: PlayerAttack
   m_EditorClassIdentifier: 
-  physicalDamage: 50
+  physicalDamage: 30
   fireDamage: 3
   waterDamage: 3
   earthDamage: 3

@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class NPCController : EntityController
 {
-
-    [SerializeField] NPCBehavior behavior;
+    public enum Behavior
+    {
+        Attack,
+        Archer,
+        Boss
+    }
+    [SerializeField] private Behavior startingBehavior;
+    NPCBehavior _behavior;
     Transform _transform;
 
 
@@ -15,7 +21,18 @@ public class NPCController : EntityController
     {
         _entityStateMachine = GetComponent<EntityStateMachine>();
 
-        behavior = new AttackBehavior(this);
+        if (startingBehavior == Behavior.Attack)
+        {
+            _behavior = new AttackBehavior(this);
+        }
+        else if (startingBehavior == Behavior.Archer)
+        {
+            _behavior = new ArcherBehavior(this);
+        }
+        else if (startingBehavior == Behavior.Boss)
+        {
+            ///_behavior = new BossBehavior(this);
+        }
         _transform = transform;
 
         ///behavior.setController(this);
@@ -29,12 +46,12 @@ public class NPCController : EntityController
     // Update is called once per frame
     void Update()
     {
-        behavior.Update();
+        _behavior.Update();
     }
 
     private void FixedUpdate()
     {
-        behavior.FixedUpdate();
+        _behavior.FixedUpdate();
     }
 
     public void onAttack()
@@ -45,5 +62,14 @@ public class NPCController : EntityController
     public void moveTo(Vector3 position)
     {
         _entityStateMachine.MoveTo(position);
+    }
+
+    public void facePosition(Vector3 position)
+    {
+        Vector3 shortPosition = (position - _entityStateMachine.transform.position);
+        shortPosition.y = 0;
+
+        shortPosition = shortPosition.normalized*1f;
+        _entityStateMachine.MoveTo(shortPosition + _entityStateMachine.transform.position);
     }
 }

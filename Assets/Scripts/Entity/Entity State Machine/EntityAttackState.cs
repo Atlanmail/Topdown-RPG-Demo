@@ -12,11 +12,11 @@ public class EntityAttackState : EntityBaseState, IAttackState
     protected EntityData _entityData;
     
     // variables for animations
-    private bool _isFinished = false;
+    protected bool _isFinished = false;
     private bool _hasSwungRight = false;
     private bool _hasSwungLeft = false;
 
-    private int _attackState = 0; /// 0 is not attacking, 1 is windup, 2 is damage portion, 3 is cooldown
+    protected int _attackState = 0; /// 0 is not attacking, 1 is windup, 2 is damage portion, 3 is cooldown
 
     public int attackState { get => _attackState; }
 
@@ -79,18 +79,22 @@ public class EntityAttackState : EntityBaseState, IAttackState
 
     public override void EnterState()
     {
-        ///Debug.Log("Entered attack");
         _isFinished = false;
         _ctx.refreshInput();
         _hasSwungRight = false;
         _hasSwungLeft = false;
 
-        _hitbox.OnEnterCollision += onHitboxCollision;
-        _hitbox.colliderDisable();
+        if (_hitbox != null)
+        {
+            _hitbox.OnEnterCollision += onHitboxCollision;
+            _hitbox.colliderDisable();
+        }
+
 
         playRightSwing();
-        
+
     }
+
 
     public override void ExitState()
     {  
@@ -100,8 +104,12 @@ public class EntityAttackState : EntityBaseState, IAttackState
         ///_animator.SetBool("isLeftSwing", false);
         ///_animator.SetBool("isRightSwing", false);
         ///
-        _hitbox.OnEnterCollision -= onHitboxCollision;
-        _hitbox.colliderDisable();
+        if (_hitbox != null)
+        {
+            _hitbox.OnEnterCollision -= onHitboxCollision;
+            _hitbox.colliderDisable();
+        }
+        
     }
 
     public override void FixedUpdateState()
@@ -189,28 +197,44 @@ public class EntityAttackState : EntityBaseState, IAttackState
 
 
 
-    public void onAttackWindupStart()
+    public virtual void onAttackWindupStart()
     {
         _attackState = 1;
     }
 
-    public void onAttackAnimationStart()
+    
+
+    public virtual void onAttackAnimationStart()
     {
-        _hitbox.colliderEnable();
+        if (_hitbox != null)
+        {
+            _hitbox.colliderEnable();
+        }
+
         _attackState = 2;
     }
 
-    public void onAttackAnimationEnd()
+    
+
+    public virtual void onAttackAnimationEnd()
     {
-        _hitbox.colliderDisable();
+        if (_hitbox != null)
+        {
+            _hitbox.colliderDisable();
+        }
+
         checkIfFinished();
 
-        _attackState = 3;
+        _attackState = 3; 
     }
 
-    public void onAttackAnimationRecovered()
+
+    public virtual void onAttackAnimationRecovered()
     {
         checkIfFinished();
         _attackState = 0;
     }
+
+    
+
 }
